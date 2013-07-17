@@ -15,8 +15,7 @@ class CoolCarousel extends PageLinesSection {
 /*
 TODO
 -easing CSS
--vertical
--fade
+-set to show Default / help text / no sets
 -additional images
 -description
 -same slide sizes
@@ -67,6 +66,19 @@ TODO
 
 		//$value = $this->opt('option_key'); // http://docs.pagelines.com/developer/dms-option-engine
 
+
+/*
+		http://bxslider.com/faqs
+
+		'horizontal' and 'fade' sliders require all 3:
+			minSlides
+			maxSlides
+			slideWidth
+		'vertical' sliders can omit maxSlides
+
+		'vertical' sliders require slideWidth (pixels)
+*/
+
 		//General
 		$mode = $this->opt('coolcarousel_mode');
 		$speed = $this->opt('coolcarousel_speed');
@@ -85,7 +97,7 @@ TODO
 		$video = $this->opt('coolcarousel_video');
 		//$responsive = $this->opt('coolcarousel_responsive');
 		$usecss = $this->opt('coolcarousel_usecss');
-		$preloadimages = $this->opt('coolcarousel_preloadimages');
+		//$preloadimages = $this->opt('coolcarousel_preloadimages');
 		$touchenabled = $this->opt('coolcarousel_touchenabled');
 		$swipethreshold = $this->opt('coolcarousel_swipethreshold');
 		$onetoonetouch = $this->opt('coolcarousel_onetoonetouch');
@@ -121,6 +133,8 @@ TODO
 		$maxslides = $this->opt('coolcarousel_maxslides');
 		$moveslides = $this->opt('coolcarousel_moveslides');
 		$slidewidth = $this->opt('coolcarousel_slidewidth');
+			if($mode == "'vertical'" && empty($slidewidth)) { $slidewidth = '2000'; }
+/*
 		//Callbacks
 		$onsliderload = $this->opt('coolcarousel_onsliderload');
 		$onslidebefore = $this->opt('coolcarousel_onslidebefore');
@@ -137,82 +151,103 @@ TODO
 		$getslidecount = $this->opt('coolcarousel_getslidecount');
 		$reloadslider = $this->opt('coolcarousel_reloadslider');
 		$destroyslider = $this->opt('coolcarousel_destroyslider');
+*/
 		?>
 		<script type="text/javascript">
 		/*<![CDATA[*/
 			jQuery(document).ready(function(){
 				jQuery("#coolcarousel-<?php echo $clone_id ?>").bxSlider({
 					<?php
+/*
+echo var_dump($pagertype);
+if(empty($pagertype)){ echo 'pagertype empty';}
+echo var_dump($adaptiveheight);
+if($adaptiveheight == FALSE){ echo "xxx $adaptiveheight xxx";}
+echo "pagerType: 'short',";
+*/
 					if(!empty($mode)){ echo 'mode: '. $mode .','; }
-					if(!empty($speed)){ echo 'speed: '. $speed .','; }
-					if(!empty($slideMargin)){ echo 'slideMargin: '. $slideMargin .','; }
-					if(!empty($startSlide)){ echo 'startSlide: '. $startSlide .','; }
-					if(!empty($randomStart)){ echo 'randomStart: '. $randomStart .','; }
-					if(!empty($slideSelector)){ echo 'slideSelector: '. $slideSelector .','; }
-					if(!empty($infiniteLoop)){ echo 'infiniteLoop: '. $infiniteLoop .','; }
-					if(!empty($hideControlOnEnd)){ echo 'hideControlOnEnd: '. $hideControlOnEnd .','; }
+					if(!empty($speed) || $speed === '0' ){ echo 'speed: '. $speed .','; }
+					if(!empty($slidemargin)){ echo 'slideMargin: '. $slidemargin .','; }
+					if(!empty($startslide)){ echo 'startSlide: '. $startslide .','; }
+					if(!empty($randomstart)){ echo 'randomStart: '. $randomstart .','; }
+					if(!empty($slideselector)){ echo 'slideSelector: '. $slideselector .','; }
+					if($infiniteloop == 'ccfalse'){ echo 'infiniteLoop: false,'; }
+					if($hidecontrolonend == 'cctrue'){ echo 'hideControlOnEnd: true,'; }
 					if(!empty($easing)){ echo 'easing: '. $easing .','; }
-					if(!empty($captions)){ echo 'captions: '. $captions .','; }
-					if(!empty($ticker)){ echo 'ticker: '. $ticker .','; }
-					if(!empty($tickerHover)){ echo 'tickerHover: '. $tickerHover .','; }
-					if(!empty($adaptiveHeight)){ echo 'adaptiveHeight: '. $adaptiveHeight .',';
-						if(!empty($adaptiveHeightSpeed)){ echo 'adaptiveHeightSpeed: '. $adaptiveHeightSpeed .','; }
-						}
-					if(!empty($video)){ echo 'video: '. $video .','; }
-					//if(!empty($responsive)){ echo 'responsive: '. $responsive .','; }
-					if(!empty($useCSS)){ echo 'useCSS: '. $useCSS .','; }
-					if(!empty($preloadImages)){ echo 'preloadImages: '. $preloadImages .','; }
-					if(!empty($touchEnabled)){ echo 'touchEnabled: '. $touchEnabled .','; }
-					if(!empty($swipeThreshold)){ echo 'swipeThreshold: '. $swipeThreshold .','; }
-					if(!empty($oneToOneTouch)){ echo 'oneToOneTouch: '. $oneToOneTouch .','; }
-					if(!empty($preventDefaultSwipeX)){ echo 'preventDefaultSwipeX: '. $preventDefaultSwipeX .','; }
-					if(!empty($preventDefaultSwipeY)){ echo 'preventDefaultSwipeY: '. $preventDefaultSwipeY .','; }
+					if($captions == 'cctrue'){ echo 'captions: true'; }
+					if($ticker == 'cctrue'){
+						echo 'ticker: true,';
+						if($tickerhover == 'cctrue'){ echo 'tickerHover: true,'; }
+					}
 
-					if(!empty($pager)){ echo 'pager: '. $pager .','; }
-					if(!empty($pagerType)){ echo 'pagerType: '. $pagerType .','; }
-					if(!empty($pagerShortSeparator)){ echo 'pagerShortSeparator: '. $pagerShortSeparator .','; }
-					if(!empty($pagerSelector)){ echo 'pagerSelector: '. $pagerSelector .','; }
-					if(!empty($pagerCustom)){ echo 'pagerCustom: '. $pagerCustom .','; }
-					if(!empty($buildPager)){ echo 'buildPager: '. $buildPager .','; }
+					if($adaptiveheight == 'cctrue'){
+						echo 'adaptiveHeight: true,';
+						if(!empty($adaptiveheightspeed) || $adaptiveheightspeed === '0' ){ echo 'adaptiveHeightSpeed: '. $adaptiveheightspeed .','; }
+					}
 
-					if(!empty($controls)){ echo 'controls: '. $controls .','; }
-					if(!empty($nextText)){ echo 'nextText: bob'. $nextText .','; }
-					if(!empty($prevText)){ echo 'prevText: Sally'. $prevText .','; }
-					if(!empty($nextSelector)){ echo 'nextSelector: '. $nextSelector .','; }
-					if(!empty($prevSelector)){ echo 'prevSelector: '. $prevSelector .','; }
-					if(!empty($autoControls)){ echo 'autoControls: '. $autoControls .','; }
-					if(!empty($startText)){ echo 'startText: '. $startText .','; }
-					if(!empty($stopText)){ echo 'stopText: '. $stopText .','; }
-					if(!empty($autoControlsCombine)){ echo 'autoControlsCombine: '. $autoControlsCombine .','; }
-					if(!empty($autoControlsSelector)){ echo 'autoControlsSelector: '. $autoControlsSelector .','; }
+					//if($video == 'cctrue'){ echo 'video: true,'; }
+					//if($responsive == 'ccfalse'){ echo 'responsive: false,'; }
+					if(!empty($usecss)){ echo 'useCSS: '. $usecss .','; }
+					//if(!empty($preloadimages)){ echo 'preloadImages: '. $preloadimages .','; }
 
-					if(!empty($auto)){ echo 'auto: '. $auto .','; }
-					if(!empty($pause)){ echo 'pause: '. $pause .','; }
-					if(!empty($autoStart)){ echo 'autoStart: '. $autoStart .','; }
-					if(!empty($autoDirection)){ echo 'autoDirection: '. $autoDirection .','; }
-					if(!empty($autoHover)){ echo 'autoHover: '. $autoHover .','; }
-					if(!empty($autoDelay)){ echo 'autoDelay: '. $autoDelay .','; }
+					if($touchenabled == 'ccfalse'){ echo 'touchEnabled: false,'; }
+					if(!empty($swipethreshold)){ //if swipe false
+						echo 'swipeThreshold: '. $swipethreshold .',';
+					} else { //if swipe true
+						if($onetoonetouch == 'ccfalse'){ echo 'oneToOneTouch: false,'; }
+						if($preventdefaultswipex == 'ccfalse'){ echo 'preventDefaultSwipeX: false,'; }
+						if($preventdefaultswipey == 'cctrue'){ echo 'preventDefaultSwipeY: true,'; }
+					}
 
-					if(!empty($minSlides)){ echo 'minSlides: '. $minSlides .','; }
-					if(!empty($maxSlides)){ echo 'maxSlides: '. $maxSlides .','; }
-					if(!empty($moveSlides)){ echo 'moveSlides: '. $moveSlides .','; }
-					if(!empty($slideWidth)){ echo 'slideWidth: '. $slideWidth .','; }
+					if($pager == 'ccfalse'){ echo 'pager: false,'; }
+					if(!empty($pagertype)){
+						echo 'pagerType: '. $pagertype .',';
+						if(!empty($pagershortseparator)){ echo "pagerShortSeparator: ' $pagershortseparator ',"; }
+					}
+					if(!empty($pagerselector)){ echo 'pagerSelector: '. $pagerselector .','; }
+					if(!empty($pagercustom)){ echo 'pagerCustom: '. $pagercustom .','; }
+					if(!empty($buildpager)){ echo 'buildPager: '. $buildpager .','; }
 
-					if(!empty($onSliderLoad)){ echo 'onSliderLoad: '. $onSliderLoad .','; }
-					if(!empty($onSlideBefore)){ echo 'onSlideBefore: '. $onSlideBefore .','; }
-					if(!empty($onSlideAfter)){ echo 'onSlideAfter: '. $onSlideAfter .','; }
-					if(!empty($onSlideNext)){ echo 'onSlideNext: '. $onSlideNext .','; }
-					if(!empty($onSlidePrev)){ echo 'onSlidePrev: '. $onSlidePrev .','; }
+					if($controls == 'ccfalse'){ echo 'controls: false,'; }
+					if(!empty($nexttext)){ echo "nextText: '$nexttext',"; }
+					if(!empty($prevtext)){ echo "prevText: '$prevtext',"; }
+					if(!empty($nextselector)){ echo 'nextSelector: '. $nextselector .','; }
+					if(!empty($prevselector)){ echo 'prevSelector: '. $prevselector .','; }
+					if($autocontrols == 'cctrue'){ echo 'autoControls: true,'; }
+					if(!empty($starttext)){ echo "startText: '$starttext',"; }
+					if(!empty($stoptext)){ echo "stopText: '$stoptext',"; }
+					if($autocontrolscombine == 'cctrue'){ echo 'autoControlsCombine: true,'; }
+					if(!empty($autocontrolsselector)){ echo 'autoControlsSelector: '. $autocontrolsselector .','; }
 
-					if(!empty($goToSlide)){ echo 'goToSlide: '. $goToSlide .','; }
-					if(!empty($goToNextSlide)){ echo 'goToNextSlide: '. $goToNextSlide .','; }
-					if(!empty($goToPrevSlide)){ echo 'goToPrevSlide: '. $goToPrevSlide .','; }
-					if(!empty($startAuto)){ echo 'startAuto: '. $startAuto .','; }
-					if(!empty($stopAuto)){ echo 'stopAuto: '. $stopAuto .','; }
-					if(!empty($getCurrentSlide)){ echo 'getCurrentSlide: '. $getCurrentSlide .','; }
-					if(!empty($getSlideCount)){ echo 'getSlideCount: '. $getSlideCount .','; }
-					if(!empty($reloadSlider)){ echo 'reloadSlider: '. $reloadSlider .','; }
-					if(!empty($destroySlider)){ echo 'destroySlider: '. $destroySlider .','; }
+					if($auto == 'cctrue'){ echo 'auto: true,'; }
+			if(!empty($pause)){ echo 'pause: '. $pause .','; }
+			if($autostart == 'ccfalse'){ echo 'autoStart: false,'; }
+			if(!empty($autodirection)){ echo 'autoDirection: '. $autodirection .','; }
+			if($autohover == 'cctrue'){ echo 'autoHover: true,'; }
+			if(!empty($autodelay)){ echo 'autoDelay: '. $autodelay .','; }
+
+					if(!empty($minslides)){ echo 'minSlides: '. $minslides .','; }
+					if(!empty($maxslides)){ echo 'maxSlides: '. $maxslides .','; }
+					if(!empty($moveslides)){ echo 'moveSlides: '. $moveslides .','; }
+					if(!empty($slidewidth)){ echo 'slideWidth: '. $slidewidth .','; }
+
+/*
+					if(!empty($onsliderload)){ echo 'onSliderLoad: '. $onsliderload .','; }
+					if(!empty($onslidebefore)){ echo 'onSlideBefore: '. $onslidebefore .','; }
+					if(!empty($onslideafter)){ echo 'onSlideAfter: '. $onslideafter .','; }
+					if(!empty($onslidenext)){ echo 'onSlideNext: '. $onslidenext .','; }
+					if(!empty($onslideprev)){ echo 'onSlidePrev: '. $onslideprev .','; }
+
+					if(!empty($gotoslide)){ echo 'goToSlide: '. $gotoslide .','; }
+					if(!empty($gotonextslide)){ echo 'goToNextSlide: '. $gotonextslide .','; }
+					if(!empty($gotoprevslide)){ echo 'goToPrevSlide: '. $gotoprevslide .','; }
+					if(!empty($startauto)){ echo 'startAuto: '. $startauto .','; }
+					if(!empty($stopauto)){ echo 'stopAuto: '. $stopauto .','; }
+					if(!empty($getcurrentslide)){ echo 'getCurrentSlide: '. $getcurrentslide .','; }
+					if(!empty($getslidecount)){ echo 'getSlideCount: '. $getslidecount .','; }
+					if(!empty($reloadslider)){ echo 'reloadSlider: '. $reloadslider .','; }
+					if(!empty($destroyslider)){ echo 'destroySlider: '. $destroyslider .','; }
+*/
 					?>
 				});
 			});
@@ -371,181 +406,181 @@ TODO
 					'coolcarousel_set' => array(
 						'type' 			=> 'select_taxonomy',
 						'taxonomy_id'	=> $this->taxID,
-						'inputlabel'	=> __( 'Cool Carousel Set To Show', $this->id ),
+						'inputlabel'	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Cool Carousel Set To Show</span>', $this->id ),
 					),
 					'coolcarousel_totalslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Max # of slides to include.<br/>Default: unlimited<br/>If there are 20 slides in your chosen Set, you can enter a number like 7 and only 7 of the 20 slides will be in the slider.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of slides to include</span><br/>Default: unlimited<br/>If there are 20 slides in your chosen Set, you can enter a number like 7 and only 7 of the 20 slides will be in the slider.', $this->id ),
 					),
 
 
 // Start of Slider Script Options
 
+//General
 					'coolcarousel_mode' => array(
 						'type' => 'select',
 						'selectvalues' => array(
-							'fade' => array('name' => __( 'Fade', $this->id )),
-							'vertical' => array('name' => __( 'Vertical', $this->id )),
+							"'fade'" => array('name' => __( 'Fade', $this->id )),
+							"'vertical'" => array('name' => __( 'Vertical', $this->id )),
 						),
-						'inputlabel' => __( 'Mode<br/>Default: Horizontal', $this->id )
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Mode</span><br/>Default: Horizontal', $this->id )
 					),
 					'coolcarousel_speed' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Slide transition duration (milliseconds).<br/>Default: 500 (0.5 seconds)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slide transition speed/duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id ),
 					),
-					'coolcarousel_slideMargin' => array(
+					'coolcarousel_slidemargin' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Margin between each slide (pixels).<br/>Default: 0', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Margin between each slide (pixels)</span><br/>Default: 0', $this->id ),
 					),
 //coolcarousel_startSlide
 //coolcarousel_randomStart
 //coolcarousel_slideSelector
-					'coolcarousel_infiniteLoop' => array(
+					'coolcarousel_infiniteloop' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'Infinite Loop<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Infinite Loop</span><br/>Default: ON', $this->id ),
 					),
-					'coolcarousel_hideControlOnEnd' => array(
+					'coolcarousel_hidecontrolonend' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Hide Control On End YES', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Hide Control On End YES', $this->id ) )
 						),
-						'inputlabel' => __( 'Hide Control On End<br/>Default: NO', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Hide Control On End</span><br/>Default: NO', $this->id ),
 					),
 					'coolcarousel_easing' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'linear'		=> array('name' => __( 'Linear', $this->id ) ),
-							'ease'		=> array('name' => __( 'Ease', $this->id ) ),
-							'ease-in'		=> array('name' => __( 'Ease-In', $this->id ) ),
-							'ease-out'		=> array('name' => __( 'Ease-Out', $this->id ) ),
-							'ease-in-out'		=> array('name' => __( 'Ease-In-Out', $this->id ) ),
-							//'cubic-bezier(n,n,n,n)'		=> array('name' => __( 'cubic-bezier(n,n,n,n)', $this->id ) ),
+							"'linear'"		=> array('name' => __( 'Linear', $this->id ) ),
+							"'ease'"		=> array('name' => __( 'Ease', $this->id ) ),
+							"'ease-in'"		=> array('name' => __( 'Ease-In', $this->id ) ),
+							"'ease-out'"		=> array('name' => __( 'Ease-Out', $this->id ) ),
+							"'ease-in-out'"		=> array('name' => __( 'Ease-In-Out', $this->id ) ),
+							//"'cubic-bezier(n,n,n,n)'"		=> array('name' => __( 'cubic-bezier(n,n,n,n)', $this->id ) ),
 						),
-						'inputlabel' => __( 'Easing<br/>Default: n/a', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing</span><br/>Default: n/a', $this->id ),
 					),
 					'coolcarousel_captions' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Captions ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Captions ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Captions<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF', $this->id ),
 					),
 					'coolcarousel_ticker' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Ticker Mode ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Ticker Mode ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Ticker / Scrolling News Mode<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker / Scrolling News Mode</span><br/>Default: OFF', $this->id ),
 					),
 /*
 // does not work if using CSS Transitions
-					'coolcarousel_tickerHover' => array(
+					'coolcarousel_tickerhover' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Ticker Pause on Hover ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Ticker Pause on Hover ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Ticker Hover<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker Hover</span><br/>Default: OFF', $this->id ),
 					),
 */
-					'coolcarousel_adaptiveHeight' => array(
+					'coolcarousel_adaptiveheight' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Adaptive Height ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Adaptive Height ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Adaptive / Dynamic Slider Height<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive / Dynamic Slider Height</span><br/>Default: OFF', $this->id ),
 					),
-					'coolcarousel_adaptiveHeightSpeed' => array(
+					'coolcarousel_adaptiveheightspeed' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Adaptive Height Transition Duration (milliseconds).<br/>Default: 500 (0.5 seconds)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive Height Transition Speed/Duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id ),
 					),
 /*
+// PageLines fitvid already handled via shortcode
 					'coolcarousel_video' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'False', $this->id ) ),
-							'true'		=> array('name' => __( 'True', $this->id ) )
+							'cctrue'		=> array('name' => __( True, $this->id ) )
 						),
-						'inputlabel' => __( 'Does this Cool Carousel Set have one or more videos?<br/>Default: False', $this->id ), // auto-detect video?
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Does this Cool Carousel Set have one or more videos?</span><br/>Default: False', $this->id ),
 					),
 */
 /*
-// no longer an option
 					'coolcarousel_responsive' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Responsive OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'Responsive OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'Responsive Slider<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Responsive Slider</span><br/>Default: ON', $this->id ),
 					),
 */
-
 //coolcarousel_useCSS
-					'coolcarousel_preloadImages' => array(
+					'coolcarousel_preloadimages' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'all'		=> array('name' => __( 'Preload ALL', $this->id ) )
+							"'all'"		=> array('name' => __( 'Preload ALL', $this->id ) )
 						),
-						'inputlabel' => __( 'Preload Images Before Starting Slider<br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all slides are identical dimensions.', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Preload Images Before Starting Slider</span><br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all slides are identical dimensions.', $this->id ),
 					),
-					'coolcarousel_touchEnabled' => array(
+
+					'coolcarousel_touchenabled' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Touch Swipe OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'Touch Swipe OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'Touch Swipe Transitions<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Touch Swipe Transitions</span><br/>Default: ON', $this->id ),
 					),
-					'coolcarousel_swipeThreshold' => array(
+					'coolcarousel_swipethreshold' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Swipe Threshold (pixels). # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Swipe Threshold (pixels).</span> # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id ),
 					),
-					'coolcarousel_oneToOneTouch' => array(
+					'coolcarousel_onetoonetouch' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'One-to-One Touch OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'One-to-One Touch OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'One-to-One Touch<br/>Default: ON.<br/>Non-fade slides follow the finger as it swipes.', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> One-to-One Touch</span><br/>Non-fade slides follow the finger as it swipes.<br/>Default: ON.', $this->id ),
 					),
-					'coolcarousel_preventDefaultSwipeX' => array(
+					'coolcarousel_preventdefaultswipex' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'x-axis Swipe OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'x-axis Swipe OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'x-axis Swipe<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> x-axis Swipe</span><br/>Default: ON', $this->id ),
 					),
-					'coolcarousel_preventDefaultSwipeY' => array(
+					'coolcarousel_preventdefaultswipey' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'y-axis Swipe ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'y-axis Swipe ON', $this->id ) )
 						),
-						'inputlabel' => __( 'y-axis Swipe<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> y-axis Swipe</span><br/>Default: OFF', $this->id ),
 					),
 //Pager
 					'coolcarousel_pager' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Pager OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'Pager OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'Pager<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager</span><br/>Default: ON', $this->id ),
 					),
-					'coolcarousel_pagerType' => array(
+					'coolcarousel_pagertype' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'short'		=> array('name' => __( 'Pager Type x of y (e.g. 1 / 5)', $this->id ) )
+							"'short'"		=> array('name' => __( 'Pager Type SHORT', $this->id ) )
 						),
-						'inputlabel' => __( 'Pager Type<br/>Default: FULL (i.e. Pager Link)', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Type</span><br/>Example of "short" -> x of y &rarr; 1 / 5<br/>Example of "full" -> circle links below slider<br/>Default: FULL', $this->id ),
 					),
-					'coolcarousel_pagerShortSeparator' => array(
+					'coolcarousel_pagershortseparator' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Pager Separator (only when Pager Type is "short")<br/>Default: " / " (without quotes)<br/>Do not forget spaces on each side if desired.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Separator (only when Pager Type is "short")</span><br/>Default: "/" (without quotes)<br/>One space on each side of separator will be added.', $this->id ),
 					),
 //coolcarousel_pagerSelector
 //coolcarousel_pagerCustom
@@ -554,112 +589,111 @@ TODO
 					'coolcarousel_controls' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Next/Prev Controls OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'Next/Prev Controls OFF', $this->id ) )
 						),
-						'inputlabel' => __( 'Next/Prev Controls<br/>Default: ON', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Next/Prev Controls</span><br/>Default: ON', $this->id ),
 					),
-/*
-					'coolcarousel_nextText' => array(
+					'coolcarousel_nexttext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Next Text<br/>Default: "Next" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Next Text</span><br/>Default: "Next" (without quotes)', $this->id ),
 					),
-					'coolcarousel_prevText' => array(
+					'coolcarousel_prevtext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Prev Text<br/>Default: "Prev" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Prev Text</span><br/>Default: "Prev" (without quotes)', $this->id ),
 					),
-*/
 //coolcarousel_nextSelector
 //coolcarousel_prevSelector
-					'coolcarousel_autoControls' => array(
+					'coolcarousel_autocontrols' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Auto Controls ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Auto Controls ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Start/Stop Controls<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Start/Stop Controls</span><br/>Default: OFF', $this->id ),
 					),
-					'coolcarousel_startText' => array(
+					'coolcarousel_starttext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Start Text<br/>Default: "Start" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Start Text</span><br/>Default: "Start" (without quotes)', $this->id ),
 					),
-					'coolcarousel_stopText' => array(
+					'coolcarousel_stoptext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Stop Text<br/>Default: "Stop" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Stop Text</span><br/>Default: "Stop" (without quotes)', $this->id ),
 					),
-					'coolcarousel_autoControlsCombine' => array(
+					'coolcarousel_autocontrolscombine' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Combine Start/Stop Controls YES', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Combine Start/Stop Controls YES', $this->id ) )
 						),
-						'inputlabel' => __( 'Combine Start/Stop Controls<br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Combine Start/Stop Controls</span><br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id ),
 					),
 //coolcarousel_autoControlsSelector
 //Auto
 					'coolcarousel_auto' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Auto Transition ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'YES Auto Play/Transition', $this->id ) )
 						),
-						'inputlabel' => __( 'Auto/Continual Transition<br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Play /Continual Transition</span><br/>Default: OFF', $this->id ),
 					),
 					'coolcarousel_pause' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Amount of time between each auto transition (milliseconds).<br/>Default: 4000 (4.0 seconds)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time between each auto transition (milliseconds)</span><br/>Default: 4000 (4.0 seconds)', $this->id ),
 					),
-					'coolcarousel_autoStart' => array(
+					'coolcarousel_autostart' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'false'		=> array('name' => __( 'Auto Start OFF', $this->id ) )
+							'ccfalse'		=> array('name' => __( 'OFF Must first click Play/Start', $this->id ) )
 						),
-						'inputlabel' => __( 'Auto Start<br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Start the Auto Play</span><br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id ),
 					),
-					'coolcarousel_autoDirection' => array(
+					'coolcarousel_autodirection' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'prev'		=> array('name' => __( 'Prev', $this->id ) )
+							"'prev'"		=> array('name' => __( 'Prev', $this->id ) )
 						),
-						'inputlabel' => __( 'Auto Direction<br/>Default: Next<br/>The direction of auto show slide transitions', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Direction</span><br/>Default: Next<br/>The direction of auto show slide transitions', $this->id ),
 					),
-					'coolcarousel_autoHover' => array(
+					'coolcarousel_autohover' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'true'		=> array('name' => __( 'Auto Hover ON', $this->id ) )
+							'cctrue'		=> array('name' => __( 'Auto Hover ON', $this->id ) )
 						),
-						'inputlabel' => __( 'Auto Hover<br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Hover</span><br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id ),
 					),
-					'coolcarousel_autoDelay' => array(
+					'coolcarousel_autodelay' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Amount of time auto show should wait before starting (milliseconds).<br/>Default: 0', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time auto show should wait before starting (milliseconds)</span><br/>Default: 0', $this->id ),
 					),
 //Carousel
 					'coolcarousel_minslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Min # of slides to be shown.<br/>Default: 1<br/>Slides will be sized down if carousel becomes smaller than the original size.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Min # of slides to be shown</span><br/>Default: 1<br/>Slides will be sized down if carousel becomes smaller than the original size.', $this->id ),
 					),
 					'coolcarousel_maxslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Max # of slides to be shown.<br/>Default: 1<br/>Slides will be sized up if carousel becomes larger than the original size.', $this->id ), //vertical carousels can omit: http://bxslider.com/faqs
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of slides to be shown</span><br/>Default: 1<br/>Slides will be sized up if carousel becomes larger than the original size.', $this->id ),
 					),
-					'coolcarousel_moveSlides' => array(
+					'coolcarousel_moveslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Slides to Move each Transition<br/>Default: The # of fully-visible slides.<br/>Must be >= minSlides and <= maxSlides.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition</span><br/>Default: The # of fully-visible slides.<br/>Must be >= minSlides and <= maxSlides.', $this->id ),
 					),
 					'coolcarousel_slidewidth' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'The width of each slide.<br/>Default: full-width', $this->id ), //vertical carousels can omit: http://bxslider.com/faqs
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> The width of each slide</span><br/>Default: full-width', $this->id ),
 					),
 				),
 			),
 // End of Slider Script Options
+// except for Callbacks and Public Methods, if desired in the future
 
 
 
@@ -672,7 +706,7 @@ TODO
 						'coolcarousel_orderby' => array(
 							'type'			=> 'select',
 							'default'		=> 'ID',
-							'inputlabel'	=> 'Order Cool Carousel By (If Not With Post Type Order Plugin)',
+							'inputlabel'	=> '<span style="color:#800000;"><i class="icon-angle-down"></i> Order Cool Carousel By</span></br>(If Not With Post Type Order Plugin)',
 							'selectvalues' => array(
 								'ID' 		=> array('name' => __( 'Post ID (Default)', $this->id ) ),
 								'title' 	=> array('name' => __( 'Title', $this->id ) ),
@@ -685,10 +719,10 @@ TODO
 								'default' => 'DESC',
 								'type' => 'select',
 								'selectvalues' => array(
-									'DESC' 		=> array('name' => __( 'Descending', $this->id ) ),
+									'DESC' 		=> array('name' => __( 'Descending (Default)', $this->id ) ),
 									'ASC' 		=> array('name' => __( 'Ascending', $this->id ) ),
 								),
-								'inputlabel'=> __( 'Select sort order', $this->id ),
+								'inputlabel'=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Select sort order</span>', $this->id ),
 						),
 					),
 				),
