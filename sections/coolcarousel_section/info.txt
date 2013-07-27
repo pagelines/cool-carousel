@@ -1,0 +1,8 @@
+== Description ==
+
+A custom post type section that allows images, videos, or custom HTML in a horizontal, fade, or vertical carousel (i.e. slider). Responsive, multiple displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options.
+
+== Changelog ==
+
+= 1.0.20130727 =
+* Initial release

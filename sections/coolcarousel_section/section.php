@@ -12,6 +12,7 @@ Workswith: templates, main, header, morefoot
 Cloning: true
 V3: true
 Filter: slider
+Loading: active
 */
 
 class CoolCarousel extends PageLinesSection {
@@ -22,10 +23,8 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 /*
 TODO
--text output
--css -> less, image path
+-lessify the colors
 -conditional options
--youtube no related
 -youtube white
 -blink issue for PL core classes
 */
@@ -43,10 +42,6 @@ TODO
 		$this->post_meta_setup();
 	}
 
-
-//	function section_styles() {}
-
-
     function section_scripts() {
 		global $pagelines_ID;
         $oset = array('post_id' => $pagelines_ID);
@@ -55,26 +50,18 @@ TODO
 			wp_enqueue_script('pagelines-easing'); // easing must be before coolcarousel
 		}
 
-/*
-		if(
-			( $this->opt('coolcarousel_easing') )
-			||
-			( $this->opt('coolcarousel_ticker') == 'cctrue' && $this->opt('coolcarousel_tickerhover') == 'cctrue' )
-		) {
-			wp_enqueue_script('pagelines-easing'); // easing must be before coolcarousel
-		}
-*/
-
-
 		wp_enqueue_script('coolcarousel', $this->base_url.'/js/coolcarousel.min.js', array( 'jquery' ), '4.1.1', true);
     }
 
 
 	function section_head(){
-
-        global $pagelines_ID;
-        $oset = array('post_id' => $pagelines_ID);
-		$clone_id = $this->oset['clone_id'];
+		if(pl_has_editor()){
+			$clone_id = $this->get_the_id();
+		} else {
+	        global $pagelines_ID;
+	        $oset = array('post_id' => $pagelines_ID);
+			$clone_id = $this->oset['clone_id'];
+		}
 
 		//$value = $this->opt('option_key'); // http://docs.pagelines.com/developer/dms-option-engine
 
@@ -402,12 +389,10 @@ TODO
 							__('Vimeo', $this->id)
 						),
 					),
-/*
-					'coolcarousel_video_embed' => array(
-						'type' 			=> 'textarea',
-						'inputlabel' 	=> __( 'Custom Video Embed Code (Note: <a href="https://github.com/davatron5000/FitVids.js/blob/master/README.md#currently-supported-players" target="_blank">fitvid.js only supports some players</a>)', $this->id ),
-					),
-*/
+					'coolcarousel_plvideorelated' => array(
+							'type'       => 'check',
+							'inputlabel' => __( 'Show Related Videos (YouTube only)?', $this->id ),
+						),
 				),
 			),
 			'coolcarousel_code' => array(
@@ -880,7 +865,13 @@ TODO
 
 
    function section_template() {
-		$clone_id = $this->oset['clone_id'];
+		if(pl_has_editor()){
+			$clone_id = $this->get_the_id();
+		} else {
+	        global $pagelines_ID;
+	        $oset = array('post_id' => $pagelines_ID);
+			$clone_id = $this->oset['clone_id'];
+		}
 
 		$nexttext = $this->opt('coolcarousel_nexttext');
 			$nexttext = esc_html($nexttext);
@@ -908,31 +899,34 @@ TODO
 			$startstopstuff .= "</div>";
 		}
 
-$nextprevlocation = $this->opt('coolcarousel_nextprevlocation') ? $this->opt('coolcarousel_nextprevlocation') : 'after';
-$startstoplocation = $this->opt('coolcarousel_startstoplocation') ? $this->opt('coolcarousel_startstoplocation') : 'after';
+		$nextprevlocation = $this->opt('coolcarousel_nextprevlocation') ? $this->opt('coolcarousel_nextprevlocation') : 'after';
+		$startstoplocation = $this->opt('coolcarousel_startstoplocation') ? $this->opt('coolcarousel_startstoplocation') : 'after';
 
-if(!empty($startstopstuff) && $startstoplocation == 'before'){
-	echo $startstopstuff;
-}
-if(!empty($nextprevstuff) && $nextprevlocation == 'before'){
-	echo $nextprevstuff;
-}
+		if(!empty($startstopstuff) && $startstoplocation == 'before'){
+			echo $startstopstuff;
+		}
+		if(!empty($nextprevstuff) && $nextprevlocation == 'before'){
+			echo $nextprevstuff;
+		}
 
 		$items = $this->get_items();
-			// check to see if there's antying to display first..
+			// check to see if there's anything to display first..
 			if ( empty( $items ) ) {
 			echo setup_section_notify( 'Message' );
 			return; // stop display here.
 		}
 
-		?>
-		<ul id="coolcarousel-<?php echo $clone_id; ?>">
-			<?php
-				foreach ( $items as $item )
-				$this->do_the_item( $item );
-			?>
-		</ul>
-		<?php
+		if(pl_has_editor()){
+			echo "<ul class='dms' id='coolcarousel-$clone_id'>";
+		} else {
+			echo "<ul class='plv2' id='coolcarousel-$clone_id'>";
+		}
+
+			foreach ( $items as $item )
+			$this->do_the_item( $item );
+
+		echo '</ul>';
+
 
 if(!empty($nextprevstuff) && $nextprevlocation == 'after'){
 	echo $nextprevstuff;
@@ -1060,8 +1054,10 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 			case 'video' :
 				$host = plmeta('coolcarousel_video_site', $oset);
 				$id   = plmeta('coolcarousel_video_id', $oset);
+				$relatedon = plmeta('coolcarousel_plvideorelated', $oset);
+					if($relatedon){ $relatedoff = 'nothanks'; } else { $relatedoff = ''; } // http://phpxref.pagelines.com/includes/class.shortcodes.php.source.html#l1415
 				if ( $host && $id )
-					$content = do_shortcode("[pl_video type='$host' id='$id']");
+					$content = do_shortcode("[pl_video type='$host' id='$id' related='$relatedoff']");
 				elseif( $embed = plmeta('coolcarousel_video_embed', $oset) )
 					$content = $embed;
 				else
