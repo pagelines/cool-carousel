@@ -8,16 +8,17 @@
 	 // http://bxcreative.com
 
 
+	// START BX
 	// RESET AND LAYOUT
 
-	.bx-wrapper {
+	.cc-wrapper {
 		position: relative;
 		margin: 0 auto 60px;
 		padding: 0;
 		*zoom: 1;
 	}
 
-	.bx-wrapper img {
+	.cc-wrapper img {
 		max-width: 100%;
 		display: block;
 		margin:0 auto; //custom
@@ -25,7 +26,7 @@
 
 	// THEME
 
-	.bx-wrapper .bx-viewport {
+	.cc-wrapper .cc-viewport {
 		-moz-box-shadow: 0 0 5px #ccc;
 		-webkit-box-shadow: 0 0 5px #ccc;
 		box-shadow: 0 0 5px #ccc;
@@ -34,8 +35,8 @@
 		background: #fff;
 	}
 
-	.bx-wrapper .bx-pager,
-	.bx-wrapper .bx-controls-auto {
+	.cc-wrapper .cc-pager,
+	.cc-wrapper .cc-controls-auto {
 		position: absolute;
 		bottom: -30px;
 		width: 100%;
@@ -43,9 +44,9 @@
 
 	// LOADER
 
-	.bx-wrapper .bx-loading {
+	.cc-wrapper .cc-loading {
 		min-height: 50px;
-		background: url(@{plExtendRoot}/coolcarousel/images/bx_loader.gif) center center no-repeat #fff;
+		background: url(@{plExtendRoot}/coolcarousel/images/cc_loader.gif) center center no-repeat #fff;
 		height: 100%;
 		width: 100%;
 		position: absolute;
@@ -56,7 +57,7 @@
 
 	// PAGER
 
-	.bx-wrapper .bx-pager {
+	.cc-wrapper .cc-pager {
 		text-align: center;
 		font-size: .85em;
 		font-family: Arial;
@@ -65,14 +66,14 @@
 		padding-top: 20px;
 	}
 
-	.bx-wrapper .bx-pager .bx-pager-item,
-	.bx-wrapper .bx-controls-auto .bx-controls-auto-item {
+	.cc-wrapper .cc-pager .cc-pager-item,
+	.cc-wrapper .cc-controls-auto .cc-controls-auto-item {
 		display: inline-block;
 		*zoom: 1;
 		*display: inline;
 	}
 
-	.bx-wrapper .bx-pager.bx-default-pager a {
+	.cc-wrapper .cc-pager.cc-default-pager a {
 		background: #666;
 		text-indent: -9999px;
 		display: block;
@@ -85,32 +86,32 @@
 		border-radius: 5px;
 	}
 
-	.bx-wrapper .bx-pager.bx-default-pager a:hover,
-	.bx-wrapper .bx-pager.bx-default-pager a.active {
+	.cc-wrapper .cc-pager.cc-default-pager a:hover,
+	.cc-wrapper .cc-pager.cc-default-pager a.active {
 		background: #000;
 	}
 
 	// DIRECTION CONTROLS (NEXT / PREV)
 
-	.bx-wrapper .bx-prev {
+	.cc-wrapper .cc-prev {
 		left: 10px;
 		background: url(@{plExtendRoot}/coolcarousel/images/controls.png) no-repeat 0 -32px;
 	}
 
-	.bx-wrapper .bx-next {
+	.cc-wrapper .cc-next {
 		right: 10px;
 		background: url(@{plExtendRoot}/coolcarousel/images/controls.png) no-repeat -43px -32px;
 	}
 
-	.bx-wrapper .bx-prev:hover {
+	.cc-wrapper .cc-prev:hover {
 		background-position: 0 0;
 	}
 
-	.bx-wrapper .bx-next:hover {
+	.cc-wrapper .cc-next:hover {
 		background-position: -43px 0;
 	}
 
-	.bx-wrapper .bx-controls-direction a {
+	.cc-wrapper .cc-controls-direction a {
 		position: absolute;
 		top: 50%;
 		margin-top: -16px;
@@ -121,17 +122,17 @@
 		z-index: 9999;
 	}
 
-	.bx-wrapper .bx-controls-direction a.disabled {
+	.cc-wrapper .cc-controls-direction a.disabled {
 		display: none;
 	}
 
 	// AUTO CONTROLS (START / STOP)
 
-	.bx-wrapper .bx-controls-auto {
+	.cc-wrapper .cc-controls-auto {
 		text-align: center;
 	}
 
-	.bx-wrapper .bx-controls-auto .bx-start {
+	.cc-wrapper .cc-controls-auto .cc-start {
 		display: block;
 		text-indent: -9999px;
 		width: 10px;
@@ -141,12 +142,12 @@
 		margin: 0 3px;
 	}
 
-	.bx-wrapper .bx-controls-auto .bx-start:hover,
-	.bx-wrapper .bx-controls-auto .bx-start.active {
+	.cc-wrapper .cc-controls-auto .cc-start:hover,
+	.cc-wrapper .cc-controls-auto .cc-start.active {
 		background-position: -86px 0;
 	}
 
-	.bx-wrapper .bx-controls-auto .bx-stop {
+	.cc-wrapper .cc-controls-auto .cc-stop {
 		display: block;
 		text-indent: -9999px;
 		width: 9px;
@@ -156,26 +157,26 @@
 		margin: 0 3px;
 	}
 
-	.bx-wrapper .bx-controls-auto .bx-stop:hover,
-	.bx-wrapper .bx-controls-auto .bx-stop.active {
+	.cc-wrapper .cc-controls-auto .cc-stop:hover,
+	.cc-wrapper .cc-controls-auto .cc-stop.active {
 		background-position: -86px -33px;
 	}
 
 	// PAGER WITH AUTO-CONTROLS HYBRID LAYOUT
 
-	.bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-pager {
+	.cc-wrapper .cc-controls.cc-has-controls-auto.cc-has-pager .cc-pager {
 		text-align: left;
 		width: 80%;
 	}
 
-	.bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-controls-auto {
+	.cc-wrapper .cc-controls.cc-has-controls-auto.cc-has-pager .cc-controls-auto {
 		right: 0;
 		width: 35px;
 	}
 
 	// IMAGE CAPTIONS
 
-	.bx-wrapper .bx-caption {
+	.cc-wrapper .cc-caption {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -184,7 +185,7 @@
 		width: 100%;
 	}
 
-	.bx-wrapper .bx-caption span {
+	.cc-wrapper .cc-caption span {
 		color: #fff;
 		font-family: Arial;
 		display: block;
