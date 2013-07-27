@@ -16,7 +16,9 @@ Filter: slider
 
 class CoolCarousel extends PageLinesSection {
 
-/* Included License: see readme file */
+/*
+Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL license ( http://sam.zoy.org/wtfpl/ )
+*/
 
 /*
 TODO
