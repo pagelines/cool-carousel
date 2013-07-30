@@ -33,6 +33,8 @@ TODO
 
 	function section_persistent() {
 
+		//add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
+
 		$this->video_hosts = array(
 			'youtube' => array('name' => __( 'YouTube', $this->id )),
 			'vimeo'   => array('name' => __( 'Vimeo', $this->id )),
@@ -41,6 +43,20 @@ TODO
 		$this->post_type_setup();
 		$this->post_meta_setup();
 	}
+
+/*
+	function coolcarousel_less_vars($less){
+
+		if(pl_has_editor()){
+			$coolcarouselpath = plugins_url() . '/coolcarousel/sections/coolcarousel';
+		} else {
+			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/coolcarousel';
+		}
+		$less['coolcarouselpath']  = $coolcarouselpath;
+
+		return $less;
+	}
+*/
 
     function section_scripts() {
 		global $pagelines_ID;
