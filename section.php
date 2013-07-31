@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130727
+Version: 1.0.20130729
 Description: A custom post type section that allows images, videos, or custom HTML in a horizontal, fade, or vertical carousel (i.e. slider). Responsive, multiple displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -21,19 +21,12 @@ class CoolCarousel extends PageLinesSection {
 Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL license ( http://sam.zoy.org/wtfpl/ )
 */
 
-/*
-TODO
--lessify the colors
--conditional options
--youtube white
--blink issue for PL core classes
-*/
 	var $ptID = 'coolcarousel'; // post type
 	var $taxID = 'coolcarousel-sets'; // category
 
 	function section_persistent() {
 
-		//add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
+		add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
 
 		$this->video_hosts = array(
 			'youtube' => array('name' => __( 'YouTube', $this->id )),
@@ -44,19 +37,17 @@ TODO
 		$this->post_meta_setup();
 	}
 
-/*
 	function coolcarousel_less_vars($less){
 
-		if(pl_has_editor()){
+		if(function_exists('pl_has_editor') && pl_has_editor()){
 			$coolcarouselpath = plugins_url() . '/coolcarousel/sections/coolcarousel';
 		} else {
 			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/coolcarousel';
 		}
-		$less['coolcarouselpath']  = $coolcarouselpath;
+		$less['coolcarouselpath']  = '"'.$coolcarouselpath.'"'; //LESS Path must be wrapped in quotes
 
 		return $less;
 	}
-*/
 
     function section_scripts() {
 		global $pagelines_ID;
@@ -71,7 +62,7 @@ TODO
 
 
 	function section_head(){
-		if(pl_has_editor()){
+		if(function_exists('pl_has_editor') && pl_has_editor()){
 			$clone_id = $this->get_the_id();
 		} else {
 	        global $pagelines_ID;
@@ -881,7 +872,7 @@ TODO
 
 
    function section_template() {
-		if(pl_has_editor()){
+		if(function_exists('pl_has_editor') && pl_has_editor()){
 			$clone_id = $this->get_the_id();
 		} else {
 	        global $pagelines_ID;
@@ -932,7 +923,7 @@ TODO
 			return; // stop display here.
 		}
 
-		if(pl_has_editor()){
+		if(function_exists('pl_has_editor') && pl_has_editor()){
 			echo "<ul class='dms' id='coolcarousel-$clone_id'>";
 		} else {
 			echo "<ul class='plv2' id='coolcarousel-$clone_id'>";
