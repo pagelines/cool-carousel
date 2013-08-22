@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130729
+Version: 1.0.20130822
 Description: A custom post type section that allows images, videos, or custom HTML in a horizontal, fade, or vertical carousel (i.e. slider). Responsive, multiple displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -21,8 +21,8 @@ class CoolCarousel extends PageLinesSection {
 Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL license ( http://sam.zoy.org/wtfpl/ )
 */
 
-	var $ptID = 'coolcarousel'; // post type
-	var $taxID = 'coolcarousel-sets'; // category
+	var $ptID = 'cool-carousel'; // post type
+	var $taxID = 'cool-carousel-sets'; // category
 
 	function section_persistent() {
 
@@ -40,9 +40,9 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 	function coolcarousel_less_vars($less){
 
 		if(function_exists('pl_has_editor') && pl_has_editor()){
-			$coolcarouselpath = plugins_url() . '/coolcarousel/sections/coolcarousel';
+			$coolcarouselpath = plugins_url() . '/cool-carousel/sections/cool-carousel';
 		} else {
-			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/coolcarousel';
+			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/cool-carousel';
 		}
 		$less['coolcarouselpath']  = '"'.$coolcarouselpath.'"'; //LESS Path must be wrapped in quotes
 
@@ -57,7 +57,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			wp_enqueue_script('pagelines-easing'); // easing must be before coolcarousel
 		}
 
-		wp_enqueue_script('coolcarousel', $this->base_url.'/js/coolcarousel.min.js', array( 'jquery' ), '4.1.1', true);
+		wp_enqueue_script('cool-carousel', $this->base_url.'/js/coolcarousel.min.js', array( 'jquery' ), '4.1.1', true);
     }
 
 
@@ -187,7 +187,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
-				jQuery("#coolcarousel-<?php echo $clone_id ?>").ccSlider({
+				jQuery("#cool-carousel-<?php echo $clone_id ?>").ccSlider({
 					<?php
 					if(!empty($mode)){ echo "mode: '$mode',"; }
 					if(!empty($speed)){ echo 'speed: '. $speed .','; }
@@ -413,7 +413,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 
 		$type_metapanel_settings = array(
-				'id' 		=> 'coolcarousel-metapanel',
+				'id' 		=> 'cool-carousel-metapanel',
 				'name' 		=> 'Cool Carousel Options',
 				'posttype' 	=> array( $this->id ),
 			);
@@ -421,7 +421,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		$coolcarousel_meta_panel =  new PageLinesMetaPanel( $type_metapanel_settings );
 
 		$type_metatab_settings = array(
-			'id' 		=> 'coolcarousel-type-metatab',
+			'id' 		=> 'cool-carousel-type-metatab',
 			'name' 		=> 'Cool Carousel Post',
 			'icon' 		=> $this->icon,
 		);
@@ -924,9 +924,9 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		}
 
 		if(function_exists('pl_has_editor') && pl_has_editor()){
-			echo "<ul class='dms' id='coolcarousel-$clone_id'>";
+			echo "<ul class='dms' id='cool-carousel-$clone_id'>";
 		} else {
-			echo "<ul class='plv2' id='coolcarousel-$clone_id'>";
+			echo "<ul class='plv2' id='cool-carousel-$clone_id'>";
 		}
 
 			foreach ( $items as $item )
@@ -1028,7 +1028,7 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 				$graymode = $this->opt('coolcarousel_grayscale');
 				$boxstyling = $this->opt('coolcarousel_boxstyling');
 
-				$image = '<img class="coolcarousel-image';
+				$image = '<img class="cool-carousel-image';
 
 					if($graymode == 'gray'){ $image .= ' cc-grayscale'; }
 					if($graymode == 'graynonhover'){ $image .= ' cc-grayscale-hover'; }
@@ -1079,7 +1079,7 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 		if ( ! $content )
 			return false;
 
-		$out = sprintf('<li class="coolcarousel-item %s-item slide">%s</li>', $type, do_shortcode( $content ) );
+		$out = sprintf('<li class="cool-carousel-item %s-item slide">%s</li>', $type, do_shortcode( $content ) );
 
 		return $out;
 	}
@@ -1147,7 +1147,7 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 				}
 				break;
 			case $this->taxID:
-				echo get_the_term_list($post->ID, 'coolcarousel-sets', '', ', ','');
+				echo get_the_term_list($post->ID, 'cool-carousel-sets', '', ', ','');
 				break;
 		}
 	}
