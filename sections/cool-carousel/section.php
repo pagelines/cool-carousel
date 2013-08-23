@@ -298,12 +298,6 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 				'capability_type'	=> 'page',
 				'supports'			=> array( 'title' ),
 				'menu_icon'			=> $this->icon,
-/*
-				'show_in_menu'		=> true,
-				'show_in_nav_menus'	=> false,
-				'show_in_admin_bar'	=> true,
-				'exclude_from_search' => true,
-*/
 			);
 		$taxonomies = array(
 			$this->taxID => array(
