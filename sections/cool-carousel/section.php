@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130822
+Version: 1.0.20130823
 Description: A custom post type section that allows images, videos, or custom HTML in a horizontal, fade, or vertical carousel (i.e. slider). Responsive, multiple displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -290,18 +290,20 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 	function post_type_setup(){
 		// http://codex.wordpress.org/Function_Reference/register_post_type
 		// http://www.paulund.co.uk/creating-a-custom-post-type
+		// don't need all custom stuff because PageLinesPostType sets defaults ( https://github.com/pagelines/DMS/blob/7602ed0959184fe4ab30207e2b0327e4cb5542f6/includes/class.types.php )
 		$args = array(
 				'label' 			=> __( 'Cool Carousel', $this->id ),
 				'singular_label' 	=> __( 'Cool Carousel Slide', $this->id ), // default is 'Post' in WP Admin Bar
 				'description' 		=> __( 'Cool Carousel Slides', $this->id ),
-				'public'			=> true,
-				'exclude_from_search' => true,
-				'publicly_queryable' => false,
-				'show_in_nav_menus'	=> false,
-				'menu_position'		=> 20,
-				'menu_icon'			=> $this->icon,
 				'capability_type'	=> 'page',
 				'supports'			=> array( 'title' ),
+				'menu_icon'			=> $this->icon,
+/*
+				'show_in_menu'		=> true,
+				'show_in_nav_menus'	=> false,
+				'show_in_admin_bar'	=> true,
+				'exclude_from_search' => true,
+*/
 			);
 		$taxonomies = array(
 			$this->taxID => array(
