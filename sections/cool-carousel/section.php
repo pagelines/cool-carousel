@@ -579,7 +579,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 							'easeOutBounce' => array('name' => __( 'easeOutBounce', $this->id ) ),
 							'easeInOutBounce' => array('name' => __( 'easeInOutBounce', $this->id ) ),
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing</span><br/>Default: n/a', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id ),
 					),
 					'coolcarousel_ticker' => array(
 						'type' 		=> 'select',
