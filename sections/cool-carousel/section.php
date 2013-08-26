@@ -5,7 +5,7 @@ Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
 Version: 1.0.20130824
-Description: A custom post type section that allows images, videos, or custom HTML in a horizontal, fade, or vertical carousel (i.e. slider). Responsive, multiple displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options.
+Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
 Workswith: templates, main, header, morefoot
@@ -57,7 +57,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			wp_enqueue_script('pagelines-easing'); // easing must be before coolcarousel
 		}
 
-		wp_enqueue_script('cool-carousel', $this->base_url.'/js/coolcarousel.min.js', array( 'jquery' ), '4.1.1', true);
+		wp_enqueue_script('cool-carousel', $this->base_url.'/js/coolcarousel.min.js', array( 'jquery' ), '4.1.1', false);
     }
 
 
@@ -105,7 +105,8 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		$pager = $this->opt('coolcarousel_pager');
 		$pagertype = $this->opt('coolcarousel_pagertype');
 		$pagershortseparator = $this->opt('coolcarousel_pagershortseparator');
-			$pagershortseparator = esc_html($pagershortseparator);
+			//$pagershortseparator = esc_html($pagershortseparator);
+			$pagershortseparator = do_shortcode($pagershortseparator);
 /*
 		$pagerselector = $this->opt('coolcarousel_pagerselector');
 		$pagercustom = $this->opt('coolcarousel_pagercustom');
@@ -114,9 +115,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		//Controls
 		$controls = $this->opt('coolcarousel_controls');
 		$nexttext = $this->opt('coolcarousel_nexttext');
-			$nexttext = esc_html($nexttext);
+			//$nexttext = esc_html($nexttext);
+			$nexttext = do_shortcode($nexttext);
 		$prevtext = $this->opt('coolcarousel_prevtext');
-			$prevtext = esc_html($prevtext);
+			//$prevtext = esc_html($prevtext);
+			$prevtext = do_shortcode($prevtext);
 		if(!empty($nexttext) || !empty($prevtext) ){ //they are supposed to default but do not
 			if(empty($nexttext)){ $nexttext = 'Next'; }
 			if(empty($prevtext)){ $prevtext = 'Prev'; }
@@ -125,9 +128,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		//$prevselector = $this->opt('coolcarousel_prevselector');
 		$autocontrols = $this->opt('coolcarousel_autocontrols');
 		$starttext = $this->opt('coolcarousel_starttext');
-			$starttext = esc_html($starttext);
+			//$starttext = esc_html($starttext);
+			$starttext = do_shortcode($starttext);
 		$stoptext = $this->opt('coolcarousel_stoptext');
-			$stoptext = esc_html($stoptext);
+			//$stoptext = esc_html($stoptext);
+			$stoptext = do_shortcode($stoptext);
 		if(!empty($starttext) || !empty($stoptext) ){ //they are supposed to default but do not
 			if(empty($starttext)){ $starttext = 'Start'; }
 			if(empty($stoptext)){ $stoptext = 'Stop'; }
@@ -240,8 +245,8 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					if(!empty($buildpager)){ echo 'buildPager: '. $buildpager .','; }
 
 					if($controls == 'ccfalse'){ echo 'controls: false,'; }
-					if(!empty($nexttext)){ echo "nextSelector: '.cc-next',nextText: '$nexttext',"; }
-					if(!empty($prevtext)){ echo "prevSelector: '.cc-prev',prevText: '$prevtext',"; }
+					if(!empty($nexttext)){ echo "nextSelector: '.cc-next-custom',nextText: '$nexttext',"; }
+					if(!empty($prevtext)){ echo "prevSelector: '.cc-prev-custom',prevText: '$prevtext',"; }
 					//see above //if(!empty($nextselector)){ echo 'nextSelector: '. $nextselector .','; }
 					//see above //if(!empty($prevselector)){ echo 'prevSelector: '. $prevselector .','; }
 					if($autocontrols == 'cctrue'){ echo 'autoControls: true,'; }
@@ -354,23 +359,23 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						),
 					'coolcarousel_image_link' => array(
 							'type'       => 'text',
-							'inputlabel' => __( 'Cool Carousel Link (Optional)', $this->id ),
+							'inputlabel' => __( 'Cool Carousel Link (Optional)<br/><span style="font-weight:normal;">Entire image becomes clickable and goes to this link.</span>', $this->id ),
 						),
 					'coolcarousel_image_target' => array(
 							'type'       => 'check',
-							'inputlabel' => __( 'Open link in New Window?', $this->id ),
+							'inputlabel' => __( 'Open Link in New Window?', $this->id ),
 						),
 					'coolcarousel_title_text' => array(
 						'default'		=> '',
 						'type' 			=> 'text',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Image Caption and Title Text (Default: Post Title)', $this->id ),
+						'inputlabel' 	=> __( 'Image Caption Text and Image Title Tag (Default: Post Title)<br/><span style="font-weight:normal;">Caption text may not be displayed (depends on each Cool Carousel\'s desired options).<br/>Image Title Tag will always output so use this and Image Alt Tag (below) for Usability and/or SEO as desired.<br/>Or just name the Post Title appropriately.</span>', $this->id ),
 					),
 					'coolcarousel_alt_text' => array(
 						'default'		=> '',
 						'type' 			=> 'text',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Image Alt Text (Default: Post Title)', $this->id ),
+						'inputlabel' 	=> __( 'Image Alt Tag Text (Default: Post Title)', $this->id ),
 					),
 				),
 			),
@@ -401,7 +406,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			'coolcarousel_code' => array(
 				'title'      => __( 'Individual Cool Carousel HTML', $this->id ),
 				'shortexp'   => __( 'Custom HTML', $this->id ),
-				'inputlabel' => __( 'You can enter custom HTML (e.g. iframe webpage, static content, etc.).<br/>Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines shortcode for responsive Google Maps</a>)', $this->id ),
+				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)</span>', $this->id ),
 				'type'       => 'textarea',
 			),
 
@@ -707,22 +712,22 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						'selectvalues'	=> array(
 							'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next/Prev Controls Location</span><br/>Default: After/Below', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Location of Custom Next/Prev Text</span><br/>Default: After/Below<br/>Only applies if Custom Next Text and/or Custom Prev Text is added.<br/>If Custom Text is used, navigation arrows are NOT displayed over the slides.', $this->id ),
 					),
 					'coolcarousel_nexttext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Next Text</span><br/>Default: "Next" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next Text</span><br/>Default: "Next" (without quotes)<br/>Try the "icon-chevron-sign-right" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Right".', $this->id ),
 					),
 					'coolcarousel_prevtext' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Prev Text</span><br/>Default: "Prev" (without quotes)', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Prev Text</span><br/>Default: "Prev" (without quotes)<br/>Try the "icon-chevron-sign-left" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Left".', $this->id ),
 					),
 					'coolcarousel_nextprevdivider' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Next/Prev Divider</span><br/>Default: N/A', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next/Prev Divider</span><br/>Default: N/A<br/>Try an <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "---".', $this->id ),
 					),
 //coolcarousel_nextSelector
 //coolcarousel_prevSelector
@@ -877,23 +882,28 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		}
 
 		$nexttext = $this->opt('coolcarousel_nexttext');
-			$nexttext = esc_html($nexttext);
+			//$nexttext = esc_html($nexttext);
+			$nexttext = do_shortcode($nexttext);
 		$prevtext = $this->opt('coolcarousel_prevtext');
-			$prevtext = esc_html($prevtext);
+			//$prevtext = esc_html($prevtext);
+			$prevtext = do_shortcode($prevtext);
 		$nextprevdivider = $this->opt('coolcarousel_nextprevdivider');
-			$nextprevdivider = esc_html($nextprevdivider);
+			//$nextprevdivider = esc_html($nextprevdivider);
+			$nextprevdivider = do_shortcode($nextprevdivider);
 
 		if(!empty($nexttext) || !empty($prevtext) ){
 			$nextprevstuff = "<div class='cc-outside cc-nextprev'>";
 			//$nextprevstuff .= "<h3>This div is outside of the slider</h3>";
-			$nextprevstuff .= "<p><span class='cc-prev $clone_id'></span> $nextprevdivider <span class='cc-next $clone_id'></span></p>";
+			$nextprevstuff .= "<p><span class='cc-prev-custom $clone_id'></span> $nextprevdivider <span class='cc-next-custom $clone_id'></span></p>";
 			$nextprevstuff .= "</div>";
 		}
 
 		$starttext = $this->opt('coolcarousel_starttext');
-			$starttext = esc_html($starttext);
+			//$starttext = esc_html($starttext);
+			$starttext = do_shortcode($starttext);
 		$stoptext = $this->opt('coolcarousel_stoptext');
-			$stoptext = esc_html($stoptext);
+			//$stoptext = esc_html($stoptext);
+			$stoptext = do_shortcode($stoptext);
 
 		if(!empty($starttext) || !empty($stoptext) ){
 			$startstopstuff = "<div class='cc-outside cc-autocontrols'>";
@@ -1058,7 +1068,7 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 				$host = plmeta('coolcarousel_video_site', $oset);
 				$id   = plmeta('coolcarousel_video_id', $oset);
 				$relatedon = plmeta('coolcarousel_plvideorelated', $oset);
-					if($relatedon){ $relatedoff = 'nothanks'; } else { $relatedoff = ''; } // http://phpxref.pagelines.com/includes/class.shortcodes.php.source.html#l1415
+					if($relatedon){ $relatedoff = ''; } else { $relatedoff = 'true'; } // https://github.com/pagelines/DMS/blob/9407e44a1553fd27a69d21ce3d0f303f84293d17/includes/class.shortcodes.php
 				if ( $host && $id )
 					$content = do_shortcode("[pl_video type='$host' id='$id' related='$relatedoff']");
 				elseif( $embed = plmeta('coolcarousel_video_embed', $oset) )
