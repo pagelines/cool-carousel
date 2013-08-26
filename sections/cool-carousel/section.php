@@ -891,7 +891,17 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			//$nextprevdivider = esc_html($nextprevdivider);
 			$nextprevdivider = do_shortcode($nextprevdivider);
 
-		if(!empty($nexttext) || !empty($prevtext) ){
+		if($this->opt('coolcarousel_ticker') == 'cctrue'){
+			$tickeron = 1;
+		} else {
+			$tickeron = 0;
+		}
+
+		if(
+		(!empty($nexttext) || !empty($prevtext) )
+		&&
+		($tickeron == 0)
+		){
 			$nextprevstuff = "<div class='cc-outside cc-nextprev'>";
 			//$nextprevstuff .= "<h3>This div is outside of the slider</h3>";
 			$nextprevstuff .= "<p><span class='cc-prev-custom $clone_id'></span> $nextprevdivider <span class='cc-next-custom $clone_id'></span></p>";
@@ -905,7 +915,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			//$stoptext = esc_html($stoptext);
 			$stoptext = do_shortcode($stoptext);
 
-		if(!empty($starttext) || !empty($stoptext) ){
+		if(
+		(!empty($starttext) || !empty($stoptext) )
+		&&
+		($tickeron == 0)
+		){
 			$startstopstuff = "<div class='cc-outside cc-autocontrols'>";
 			//$startstopstuff .= "<h3>This div is outside of the slider</h3>";
 			$startstopstuff .= "<p><span class='cc-startstop $clone_id'></span></p>";
@@ -1085,7 +1099,7 @@ if(!empty($startstopstuff) && $startstoplocation == 'after'){
 		if ( ! $content )
 			return false;
 
-		$out = sprintf('<li class="cool-carousel-item %s-item slide">%s</li>', $type, do_shortcode( $content ) );
+		$out = sprintf('<li class="cool-carousel-item %s-item slide %s">%s</li>', $type, $post_id, do_shortcode( $content ) );
 
 		return $out;
 	}
