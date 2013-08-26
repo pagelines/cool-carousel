@@ -335,7 +335,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						&bull; If you enter more than one, they will be in this priority: Image, Video, Custom HTML.<br/>
 						&bull; <strong>All images in the same set/category should have the same <em>width</em>.</strong><br/>
 						&bull; Consider naming your sets/categories with a <em>width</em> indicator, like "Favorite Images (600w)".<br/>
-						&bull; Videos will be responsive.<br/>&bull; Custom HTML will not be filtered or escaped so make sure you only enter safe HTML code. (Note: Does allow shortcodes)',
+						&bull; Videos will be responsive.<br/>&bull; Custom HTML will not be filtered or escaped so make sure you only enter safe HTML code. (Note: Does allow shortcodes but DOES NOT allow plain text!)',
 			),
 			/*'coolcarousel_media' => array(
 				'type'         => 'select',
@@ -406,7 +406,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			'coolcarousel_code' => array(
 				'title'      => __( 'Individual Cool Carousel HTML', $this->id ),
 				'shortexp'   => __( 'Custom HTML', $this->id ),
-				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)</span>', $this->id ),
+				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)<br/>Does NOT allow plain text.</span>', $this->id ),
 				'type'       => 'textarea',
 			),
 
