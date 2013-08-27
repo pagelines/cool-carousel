@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130824
+Version: 1.0.20130827
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -87,6 +87,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		$easing = $this->opt('coolcarousel_easing');
 		$captions = $this->opt('coolcarousel_captions');
 		$ticker = $this->opt('coolcarousel_ticker');
+			if($ticker == 'cctrue'){
+				$tickeron = 1;
+			} else {
+				$tickeron = 0;
+			}
 		$tickerhover = $this->opt('coolcarousel_tickerhover');
 		$adaptiveheight = $this->opt('coolcarousel_adaptiveheight');
 		$adaptiveheightspeed = $this->opt('coolcarousel_adaptiveheightspeed');
@@ -235,6 +240,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						if($preventdefaultswipey == 'cctrue'){ echo 'preventDefaultSwipeY: true,'; }
 					}
 
+				if($tickeron == 0){ //if ticker is on, pager and controls are off
 					if($pager == 'ccfalse'){ echo 'pager: false,'; }
 					if(!empty($pagertype)){
 						echo "pagerType: '$pagertype',";
@@ -247,13 +253,12 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					if($controls == 'ccfalse'){ echo 'controls: false,'; }
 					if(!empty($nexttext)){ echo "nextSelector: '.cc-next-custom',nextText: '$nexttext',"; }
 					if(!empty($prevtext)){ echo "prevSelector: '.cc-prev-custom',prevText: '$prevtext',"; }
-					//see above //if(!empty($nextselector)){ echo 'nextSelector: '. $nextselector .','; }
-					//see above //if(!empty($prevselector)){ echo 'prevSelector: '. $prevselector .','; }
 					if($autocontrols == 'cctrue'){ echo 'autoControls: true,'; }
 					if(!empty($starttext) || !empty($stoptext) ){
 						echo "autoControlsSelector: '.cc-startstop',startText: '$starttext',stopText: '$stoptext',";
 					}
 					if($autocontrolscombine == 'cctrue'){ echo 'autoControlsCombine: true,'; }
+				} //end of ticker check for pager and controls
 
 					if($auto == 'cctrue'){ echo 'auto: true,'; }
 			if(!empty($pause)){ echo 'pause: '. $pause .','; }
@@ -897,11 +902,8 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			$tickeron = 0;
 		}
 
-		if(
-		(!empty($nexttext) || !empty($prevtext) )
-		&&
-		($tickeron == 0)
-		){
+	if($tickeron == 0){
+		if( !empty($nexttext) || !empty($prevtext) ){
 			$nextprevstuff = "<div class='cc-outside cc-nextprev'>";
 			//$nextprevstuff .= "<h3>This div is outside of the slider</h3>";
 			$nextprevstuff .= "<p><span class='cc-prev-custom $clone_id'></span> $nextprevdivider <span class='cc-next-custom $clone_id'></span></p>";
@@ -915,11 +917,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			//$stoptext = esc_html($stoptext);
 			$stoptext = do_shortcode($stoptext);
 
-		if(
-		(!empty($starttext) || !empty($stoptext) )
-		&&
-		($tickeron == 0)
-		){
+		if( !empty($starttext) || !empty($stoptext) ){
 			$startstopstuff = "<div class='cc-outside cc-autocontrols'>";
 			//$startstopstuff .= "<h3>This div is outside of the slider</h3>";
 			$startstopstuff .= "<p><span class='cc-startstop $clone_id'></span></p>";
@@ -935,6 +933,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		if(!empty($nextprevstuff) && $nextprevlocation == 'before'){
 			echo $nextprevstuff;
 		}
+	}
 
 		$items = $this->get_items();
 			// check to see if there's anything to display first..
@@ -954,14 +953,14 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 		echo '</ul>';
 
-
-if(!empty($nextprevstuff) && $nextprevlocation == 'after'){
-	echo $nextprevstuff;
+if($tickeron == 0){
+	if(!empty($nextprevstuff) && $nextprevlocation == 'after'){
+		echo $nextprevstuff;
+	}
+	if(!empty($startstopstuff) && $startstoplocation == 'after'){
+		echo $startstopstuff;
+	}
 }
-if(!empty($startstopstuff) && $startstoplocation == 'after'){
-	echo $startstopstuff;
-}
-
 
 
 	} // section_template
