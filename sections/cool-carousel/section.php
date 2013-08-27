@@ -364,7 +364,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						),
 					'coolcarousel_image_link' => array(
 							'type'       => 'text',
-							'inputlabel' => __( 'Cool Carousel Link (Optional)<br/><span style="font-weight:normal;">Entire image becomes clickable and goes to this link.</span>', $this->id ),
+							'inputlabel' => __( 'Cool Carousel Link (Optional)<br/><span style="font-weight:normal;">Must enter a full URL, including http://<br/>Entire image becomes clickable and goes to this link.</span>', $this->id ),
 						),
 					'coolcarousel_image_target' => array(
 							'type'       => 'check',
@@ -411,7 +411,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 			'coolcarousel_code' => array(
 				'title'      => __( 'Individual Cool Carousel HTML', $this->id ),
 				'shortexp'   => __( 'Custom HTML', $this->id ),
-				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)<br/>Does NOT allow plain text.</span>', $this->id ),
+				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)<br/>Warning: phones and tablets won\'t respect iframe height and will display full height of iframed page (i.e. not cool).</span><br/>Does NOT allow plain text.', $this->id ),
 				'type'       => 'textarea',
 			),
 
@@ -654,7 +654,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						'selectvalues'	=> array(
 							'cctrue'		=> array('name' => __( 'Captions ON', $this->id ) )
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF<br/>FYI: Captions span entire slide width, not just width of image if image is narrower than the slide.', $this->id ),
 					),
 					'coolcarousel_grayscale' => array(
 						'type' 		=> 'select',
@@ -662,7 +662,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 							'gray'		=> array('name' => __( 'Grayscale ON', $this->id ) ),
 							'graynonhover' => array('name' => __( 'Grayscale ON, Color on Hover', $this->id ) )
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>FYI: IE10 will display 70% opacity but not grayscale.', $this->id ),
 					),
 					'coolcarousel_boxstyling' => array(
 						'type' 		=> 'select',

@@ -215,13 +215,18 @@
 	// Grayscale Images
 	.cc-grayscale,
 	.cc-grayscale-hover {
+		// http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css
+		// does not work in IE10 - http://stackoverflow.com/questions/14813142/internet-explorer-10-howto-apply-grayscale-filter
+		filter: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'><filter%20id='grayscale'><feColorMatrix%20type='matrix'%20values='0.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200%200%200%201%200'/></filter></svg>#grayscale"); // Firefox 3.5+
+		filter: gray; // IE6-9
 		filter: grayscale(100%);
-		-webkit-filter: grayscale(100%);
+		-webkit-filter: grayscale(100%); // Chrome 19+ & Safari 6+
 		-moz-filter: grayscale(100%);
 		-o-filter: grayscale(100%);
 		-ms-filter: grayscale(100%);
 		.opacity(70);
 		&:hover {
+			filter: none;
 			filter: grayscale(0%);
 			-webkit-filter: grayscale(0%);
 			-moz-filter: grayscale(0%);
@@ -236,6 +241,5 @@
 	.cc-outside {
 		text-align: center;
 	}
-
 
 }
