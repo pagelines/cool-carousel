@@ -938,7 +938,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		$items = $this->get_items();
 			// check to see if there's anything to display first..
 			if ( empty( $items ) ) {
-			echo setup_section_notify( 'Message' );
+			echo setup_section_notify( $this );
 			return; // stop display here.
 		}
 
