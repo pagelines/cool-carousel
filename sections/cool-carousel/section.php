@@ -203,11 +203,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 				jQuery("#cool-carousel-<?php echo $clone_id ?>").ccSlider({
 					<?php
 					if(!empty($mode)){ echo "mode: '$mode',"; }
-					if(!empty($speed)){ echo 'speed: '. $speed .','; }
-					if(!empty($slidemargin)){ echo 'slideMargin: '. $slidemargin .','; }
-					if(!empty($startslide)){ echo 'startSlide: '. $startslide .','; }
-					if(!empty($randomstart)){ echo 'randomStart: '. $randomstart .','; }
-					if(!empty($slideselector)){ echo 'slideSelector: '. $slideselector .','; }
+					if(!empty($speed)){ echo "speed: $speed,"; }
+					if(!empty($slidemargin)){ echo "slideMargin: $slidemargin,"; }
+					if(!empty($startslide)){ echo "startSlide: $startslide,"; }
+					if(!empty($randomstart)){ echo "randomStart: $randomstart,"; }
+					if(!empty($slideselector)){ echo "slideSelector: $slideselector,"; }
 					if($infiniteloop == 'ccfalse'){ echo 'infiniteLoop: false,'; }
 					if($hidecontrolonend == 'cctrue'){ echo 'hideControlOnEnd: true,'; }
 					if($mode !== 'fade' && !empty($easing)){ echo "easing: '$easing',"; }
@@ -220,7 +220,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					if($adaptiveheight == 'cctrue'){
 						echo 'adaptiveHeight: true,';
 						if(!empty($adaptiveheightspeed) || $adaptiveheightspeed === '0' ){
-							echo 'adaptiveHeightSpeed: '. $adaptiveheightspeed .','; }
+							echo "adaptiveHeightSpeed: $adaptiveheightspeed,"; }
 					}
 
 					//if($video == 'cctrue'){ echo 'video: true,'; }
@@ -236,7 +236,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 					if($touchenabled == 'ccfalse'){ echo 'touchEnabled: false,'; }
 					if(!empty($swipethreshold)){ //if swipe false
-						echo 'swipeThreshold: '. $swipethreshold .',';
+						echo "swipeThreshold: $swipethreshold,";
 					} else { //if swipe true
 						if($onetoonetouch == 'ccfalse'){ echo 'oneToOneTouch: false,'; }
 						if($preventdefaultswipex == 'ccfalse'){ echo 'preventDefaultSwipeX: false,'; }
@@ -249,9 +249,9 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 						echo "pagerType: '$pagertype',";
 						if(!empty($pagershortseparator)){ echo "pagerShortSeparator: ' $pagershortseparator ',"; }
 					}
-					if(!empty($pagerselector)){ echo 'pagerSelector: '. $pagerselector .','; }
-					if(!empty($pagercustom)){ echo 'pagerCustom: '. $pagercustom .','; }
-					if(!empty($buildpager)){ echo 'buildPager: '. $buildpager .','; }
+					if(!empty($pagerselector)){ echo "pagerSelector: $pagerselector,"; }
+					if(!empty($pagercustom)){ echo "pagerCustom: $pagercustom,"; }
+					if(!empty($buildpager)){ echo "buildPager: $buildpager,"; }
 
 					if($controls == 'ccfalse'){ echo 'controls: false,'; }
 					if(!empty($nexttext)){ echo "nextSelector: '.cc-next-custom',nextText: '$nexttext',"; }
@@ -264,33 +264,33 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 				} //end of ticker check for pager and controls
 
 					if($auto == 'cctrue'){ echo 'auto: true,'; }
-			if(!empty($pause)){ echo 'pause: '. $pause .','; }
+			if(!empty($pause)){ echo "pause: $pause,"; }
 			if($autostart == 'ccfalse'){ echo 'autoStart: false,'; }
 			if(!empty($autodirection)){ echo "autoDirection: '$autodirection',"; }
 			if($autohover == 'cctrue'){ echo 'autoHover: true,'; }
-			if(!empty($autodelay)){ echo 'autoDelay: '. $autodelay .','; }
+			if(!empty($autodelay)){ echo "autoDelay: $autodelay ,"; }
 
-					if(!empty($minslides)){ echo 'minSlides: '. $minslides .','; }
-					if(!empty($maxslides)){ echo 'maxSlides: '. $maxslides .','; }
-					if(!empty($moveslides)){ echo 'moveSlides: '. $moveslides .','; }
-					if(!empty($slidewidth)){ echo 'slideWidth: '. $slidewidth .','; }
+					if(!empty($minslides)){ echo "minSlides: $minslides,"; }
+					if(!empty($maxslides)){ echo "maxSlides: $maxslides,"; }
+					if(!empty($moveslides)){ echo "moveSlides: $moveslides ,"; }
+					if(!empty($slidewidth)){ echo "slideWidth: $slidewidth,"; }
 
 /*
-					if(!empty($onsliderload)){ echo 'onSliderLoad: '. $onsliderload .','; }
-					if(!empty($onslidebefore)){ echo 'onSlideBefore: '. $onslidebefore .','; }
-					if(!empty($onslideafter)){ echo 'onSlideAfter: '. $onslideafter .','; }
-					if(!empty($onslidenext)){ echo 'onSlideNext: '. $onslidenext .','; }
-					if(!empty($onslideprev)){ echo 'onSlidePrev: '. $onslideprev .','; }
+					if(!empty($onsliderload)){ echo "onSliderLoad: $onsliderload,"; }
+					if(!empty($onslidebefore)){ echo "onSlideBefore: $onslidebefore,"; }
+					if(!empty($onslideafter)){ echo "onSlideAfter: $onslideafter,"; }
+					if(!empty($onslidenext)){ echo "onSlideNext: $onslidenext,"; }
+					if(!empty($onslideprev)){ echo "onSlidePrev: $onslideprev,"; }
 
-					if(!empty($gotoslide)){ echo 'goToSlide: '. $gotoslide .','; }
-					if(!empty($gotonextslide)){ echo 'goToNextSlide: '. $gotonextslide .','; }
-					if(!empty($gotoprevslide)){ echo 'goToPrevSlide: '. $gotoprevslide .','; }
-					if(!empty($startauto)){ echo 'startAuto: '. $startauto .','; }
-					if(!empty($stopauto)){ echo 'stopAuto: '. $stopauto .','; }
-					if(!empty($getcurrentslide)){ echo 'getCurrentSlide: '. $getcurrentslide .','; }
-					if(!empty($getslidecount)){ echo 'getSlideCount: '. $getslidecount .','; }
-					if(!empty($reloadslider)){ echo 'reloadSlider: '. $reloadslider .','; }
-					if(!empty($destroyslider)){ echo 'destroySlider: '. $destroyslider .','; }
+					if(!empty($gotoslide)){ echo "goToSlide: $gotoslide,"; }
+					if(!empty($gotonextslide)){ echo "goToNextSlide: $gotonextslide,"; }
+					if(!empty($gotoprevslide)){ echo "goToPrevSlide: $gotoprevslide,"; }
+					if(!empty($startauto)){ echo "startAuto: $startauto,"; }
+					if(!empty($stopauto)){ echo "stopAuto: $stopauto,"; }
+					if(!empty($getcurrentslide)){ echo "getCurrentSlide: $getcurrentslide,"; }
+					if(!empty($getslidecount)){ echo "getSlideCount: $getslidecount,"; }
+					if(!empty($reloadslider)){ echo "reloadSlider: $reloadslider,"; }
+					if(!empty($destroyslider)){ echo "destroySlider: $destroyslider,"; }
 */
 					?>
 				});
@@ -670,7 +670,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					'coolcarousel_boxstyling' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
+							//'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
 							'plimageframehover'		=> array('name' => __( 'PageLines Image Frame on Hover', $this->id ) ),
 							'plimageframe'		=> array('name' => __( 'PageLines Image Frame ON', $this->id ) ),
 						),
