@@ -670,11 +670,11 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					'coolcarousel_boxstyling' => array(
 						'type' 		=> 'select',
 						'selectvalues'	=> array(
-							//'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
+							'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
 							'plimageframehover'		=> array('name' => __( 'PageLines Image Frame on Hover', $this->id ) ),
 							'plimageframe'		=> array('name' => __( 'PageLines Image Frame ON', $this->id ) ),
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF<br/>Only use when there are multiple slides displayed at a time (Min # of slides to be shown > 1).', $this->id ),
 					),
 				),
 
