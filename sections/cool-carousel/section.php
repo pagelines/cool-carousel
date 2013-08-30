@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130827
+Version: 1.0.20130829
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -53,7 +53,10 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		global $pagelines_ID;
         $oset = array('post_id' => $pagelines_ID);
 
-		if($this->opt('coolcarousel_easing')){
+		if(
+				$this->opt('coolcarousel_mode') !== 'fade'
+			&&	$this->opt('coolcarousel_easing')
+		){
 			wp_enqueue_script('pagelines-easing'); // easing must be before coolcarousel
 		}
 
@@ -153,7 +156,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		$autohover = $this->opt('coolcarousel_autohover');
 		$autodelay = $this->opt('coolcarousel_autodelay');
 			$autodelay = preg_replace("/[^0-9]/","",$autodelay);
-		if($mode !== "'fade'"){
+		if($mode !== 'fade'){
 			//Carousel
 			$minslides = $this->opt('coolcarousel_minslides');
 				$minslides = preg_replace("/[^0-9]/","",$minslides);
@@ -175,7 +178,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		}
 		$slidewidth = $this->opt('coolcarousel_slidewidth');
 			$slidewidth = preg_replace("/[^0-9]/","",$slidewidth);
-			if($mode !== "'fade'" && empty($slidewidth)) { $slidewidth = '2000'; }
+			if($mode !== 'fade' && empty($slidewidth)) { $slidewidth = '2000'; }
 /*
 		//Callbacks
 		$onsliderload = $this->opt('coolcarousel_onsliderload');
@@ -207,7 +210,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 					if(!empty($slideselector)){ echo 'slideSelector: '. $slideselector .','; }
 					if($infiniteloop == 'ccfalse'){ echo 'infiniteLoop: false,'; }
 					if($hidecontrolonend == 'cctrue'){ echo 'hideControlOnEnd: true,'; }
-					if(!empty($easing)){ echo "easing: '$easing',"; }
+					if($mode !== 'fade' && !empty($easing)){ echo "easing: '$easing',"; }
 					if($captions == 'cctrue'){ echo 'captions: true,'; }
 					if($ticker == 'cctrue'){
 						echo 'ticker: true,';
@@ -589,7 +592,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 							'easeOutBounce' => array('name' => __( 'easeOutBounce', $this->id ) ),
 							'easeInOutBounce' => array('name' => __( 'easeInOutBounce', $this->id ) ),
 						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id ),
+						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing (N/A for Fade mode)</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id ),
 					),
 					'coolcarousel_ticker' => array(
 						'type' 		=> 'select',
@@ -1052,7 +1055,7 @@ if($tickeron == 0){
 					if($graymode == 'gray'){ $image .= ' cc-grayscale'; }
 					if($graymode == 'graynonhover'){ $image .= ' cc-grayscale-hover'; }
 
-					if($boxstyling == 'boxhighlighthover'){ $image .= ' cc-boxhighlighthover'; }
+					if($boxstyling == 'boxhighlighthover'){ $image .= ' cc-boxhighlight-hover'; }
 					if($boxstyling == 'plimageframe'){ $image .= ' pl-imageframe'; }
 					if($boxstyling == 'plimageframehover'){ $image .= ' pl-imageframe-hover'; }
 

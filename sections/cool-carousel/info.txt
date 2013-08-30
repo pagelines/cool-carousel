@@ -4,5 +4,5 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
-= 1.0.20130827 =
+= 1.0.20130829 =
 * Initial release
