@@ -10,7 +10,8 @@ Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&ut
 Class Name: CoolCarousel
 Workswith: templates, main, header, morefoot
 Cloning: true
-V3: true
+PageLines: true
+v3: true
 Filter: slider
 Loading: active
 */
