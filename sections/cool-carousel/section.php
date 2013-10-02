@@ -4,13 +4,12 @@ Section: Cool Carousel
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.0.20130829
+Version: 1.1.20131002
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
 Workswith: templates, main, header, morefoot
 Cloning: true
-PageLines: true
 v3: true
 Filter: slider
 Loading: active
@@ -226,11 +225,14 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 					//if($video == 'cctrue'){ echo 'video: true,'; }
 					//if($responsive == 'ccfalse'){ echo 'responsive: false,'; }
+/*
+YouTube videos are not clickable to play in the carousel for Firefox if useCSS is true
 					if(
 						$usecss == 'ccfalse'
 						|| !empty($easing)
 						|| ($ticker == 'cctrue' && $tickerhover == 'cctrue')
-					){
+					)
+*/{
 						echo 'useCSS: false,';
 					}
 					if(!empty($preloadimages)){ echo "preloadImages: '$preloadimages',"; }
