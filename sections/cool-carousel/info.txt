@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.2 =
+* version bump
+
 = 1.1 =
 * Fix for YouTube videos not being clickable to play on Firefox
 * z-index changes (make sure to flush your LESS/CSS cache) to displaying carousel controls under other PageLines elements like fixed nav, nav drop-downs, and modals
