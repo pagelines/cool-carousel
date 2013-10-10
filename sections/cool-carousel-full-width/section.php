@@ -4,7 +4,7 @@ Section: Cool Carousel Full Width
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.3
+Version: 1.3.1
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarouselFW
@@ -27,21 +27,14 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 		add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
 
-		$this->video_hosts = array(
-			'youtube' => array('name' => __( 'YouTube', $this->id )),
-			'vimeo'   => array('name' => __( 'Vimeo', $this->id )),
-			'dailymotion'   => array('name' => __( 'Daily Motion', $this->id )),
-		);
-		$this->post_type_setup();
-		$this->post_meta_setup();
 	}
 
 	function coolcarousel_less_vars($less){
 
 		if(function_exists('pl_has_editor') && pl_has_editor()){
-			$coolcarouselpath = plugins_url() . '/cool-carousel/sections/cool-carousel';
+			$coolcarouselpath = plugins_url() . '/cool-carousel/sections/cool-carousel-full-width';
 		} else {
-			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/cool-carousel';
+			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/cool-carousel-full-width';
 		}
 		$less['coolcarouselpath']  = '"'.$coolcarouselpath.'"'; //LESS Path must be wrapped in quotes
 
@@ -199,7 +192,7 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
-				jQuery("#cool-carousel-<?php echo $clone_id ?>").ccSlider({
+				jQuery("#cool-carousel-full-width-<?php echo $clone_id ?>").ccSlider({
 					<?php
 					if(!empty($mode)){ echo "mode: '$mode',"; }
 					if(!empty($speed)){ echo "speed: $speed,"; }
@@ -299,145 +292,6 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 			});
 		</script>
 		<?php
-	}
-
-
-	function post_type_setup(){
-		// http://codex.wordpress.org/Function_Reference/register_post_type
-		// http://www.paulund.co.uk/creating-a-custom-post-type
-		// don't need all custom stuff because PageLinesPostType sets defaults ( https://github.com/pagelines/DMS/blob/7602ed0959184fe4ab30207e2b0327e4cb5542f6/includes/class.types.php )
-		$args = array(
-				'label' 			=> __( 'Cool Carousel', $this->id ),
-				'singular_label' 	=> __( 'Cool Carousel Slide', $this->id ), // default is 'Post' in WP Admin Bar
-				'description' 		=> __( 'Cool Carousel Slides', $this->id ),
-				'capability_type'	=> 'page',
-				'supports'			=> array( 'title' ),
-				'menu_icon'			=> $this->icon,
-			);
-		$taxonomies = array(
-			$this->taxID => array(
-					'label' => __( 'Cool Carousel Sets', $this->id ),
-					'singular_label' => __( 'Cool Carousel Set', $this->id ),
-				)
-		);
-		$columns = array(
-			'cb'	 		=> "<input type=\"checkbox\" />",
-			'title' 		=> 'Post Title',
-			'ccmediatype'	=> 'Media Type',
-			'ccimage' 		=> 'Image',
-			//'ccimagewidth'	=> 'Width',
-			//'ccimageheight'	=> 'Height',
-			'cclink'		=> 'Image Link',
-			$this->taxID 	=> 'Cool Carousel Sets'
-		);
-
-		$this->post_type = new PageLinesPostType( $this->ptID, $args, $taxonomies, $columns, array(&$this, 'column_display'));
-	}
-
-
-
-	function post_meta_setup(){
-		$type_meta_array = array(
-			'coolcarousel_directions' => array(
-				'type'     => '',
-				'title'    => '<strong style="display:block;font-size:16px;color:#eaeaea;text-shadow:0 1px 0 black;padding:7px 7px 5px;background:#333;margin-top:5px;border-radius:3px;border:1px solid white;letter-spacing:0.1em;box-shadow:inset 0 0 3px black;">HOW TO USE:</strong>',
-				'shortexp' => '&bull; Enter EITHER an image OR a single video field OR custom HTML.<br/>
-						&bull; If you enter more than one, they will be in this priority: Image, Video, Custom HTML.<br/>
-						&bull; <strong>All images in the same set/category should have the same <em>width</em>.</strong><br/>
-						&bull; Consider naming your sets/categories with a <em>width</em> indicator, like "Favorite Images (600w)".<br/>
-						&bull; Videos will be responsive.<br/>&bull; Custom HTML will not be filtered or escaped so make sure you only enter safe HTML code. (Note: Does allow shortcodes but DOES NOT allow plain text!)',
-			),
-			/*'coolcarousel_media' => array(
-				'type'         => 'select',
-				'title'        => 'Media Type',
-				'shortexp'     => 'Determines what content to use for this carousel item',
-				'exp'          => 'Choose what kind of media you would like this item to display.<p>Default: Image</p>',
-				'selectvalues' => array(
-					'image'   => array('name' => 'Image'),
-					'video'   => array('name' => 'Video'),
-					'code'    => array('name' => 'Custom Code / HTML'),
-				)
-			),*/
-			'image_multi' => array(
-				'type'         => 'multi_option',
-				'title'        => __( 'Individual Cool Carousel IMAGE', $this->id ),
-				'shortexp'     => __( 'An Image', $this->id ),
-				'selectvalues' => array(
-					'coolcarousel_image' => array(
-							'type'       => 'image_upload',
-							'inputlabel' => __( 'Cool Carousel Image', $this->id ),
-						),
-					'coolcarousel_image_link' => array(
-							'type'       => 'text',
-							'inputlabel' => __( 'Cool Carousel Link (Optional)<br/><span style="font-weight:normal;">Must enter a full URL, including http://<br/>Entire image becomes clickable and goes to this link.</span>', $this->id ),
-						),
-					'coolcarousel_image_target' => array(
-							'type'       => 'check',
-							'inputlabel' => __( 'Open Link in New Window?', $this->id ),
-						),
-					'coolcarousel_title_text' => array(
-						'default'		=> '',
-						'type' 			=> 'text',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Image Caption Text and Image Title Tag (Default: Post Title)<br/><span style="font-weight:normal;">Caption text may not be displayed (depends on each Cool Carousel\'s desired options).<br/>Image Title Tag will always output so use this and Image Alt Tag (below) for Usability and/or SEO as desired.<br/>Or just name the Post Title appropriately.</span>', $this->id ),
-					),
-					'coolcarousel_alt_text' => array(
-						'default'		=> '',
-						'type' 			=> 'text',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( 'Image Alt Tag Text (Default: Post Title)', $this->id ),
-					),
-				),
-			),
-			'video_multi' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( 'Individual Cool Carousel VIDEO', $this->id ),
-				'shortexp'	=> __( 'A Video', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_video_site' => array(
-						'type'         => 'select',
-						'inputlabel'   => __( 'Video Hosting Site', $this->id ),
-						'selectvalues' => $this->video_hosts,
-					),
-					'coolcarousel_video_id' => array(
-						'type'       => 'text',
-						'inputlabel' => sprintf('%s (<a href="http://demo.pagelines.me/wp-content/blogs.dir/18/files/2012/06/youtube-id.png" target="_blank">%s</a> <a href="http://demo.pagelines.me/wp-content/blogs.dir/18/files/2012/06/vimeo-id.png" target="_blank">%s</a>)',
-							__('Video ID', $this->id),
-							__('YouTube', $this->id),
-							__('Vimeo', $this->id)
-						),
-					),
-					'coolcarousel_plvideorelated' => array(
-							'type'       => 'check',
-							'inputlabel' => __( 'Show Related Videos (YouTube only)?', $this->id ),
-						),
-				),
-			),
-			'coolcarousel_code' => array(
-				'title'      => __( 'Individual Cool Carousel HTML', $this->id ),
-				'shortexp'   => __( 'Custom HTML', $this->id ),
-				'inputlabel' => __( 'Custom HTML (e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/><span style="font-weight:normal;">Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)<br/>Warning: phones and tablets won\'t respect iframe height and will display full height of iframed page (i.e. not cool).</span><br/>Does NOT allow plain text.', $this->id ),
-				'type'       => 'textarea',
-			),
-
-		);
-
-
-		$type_metapanel_settings = array(
-				'id' 		=> 'cool-carousel-metapanel',
-				'name' 		=> 'Cool Carousel Options',
-				'posttype' 	=> array( $this->id ),
-			);
-
-		$coolcarousel_meta_panel =  new PageLinesMetaPanel( $type_metapanel_settings );
-
-		$type_metatab_settings = array(
-			'id' 		=> 'cool-carousel-type-metatab',
-			'name' 		=> 'Cool Carousel Post',
-			'icon' 		=> $this->icon,
-		);
-
-		$coolcarousel_meta_panel->register_tab( $type_metatab_settings, $type_meta_array );
 	}
 
 
@@ -948,9 +802,9 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 		}
 
 		if(function_exists('pl_has_editor') && pl_has_editor()){
-			echo "<ul class='dms' id='cool-carousel-$clone_id'>";
+			echo "<ul class='dms' id='cool-carousel-full-width-$clone_id'>";
 		} else {
-			echo "<ul class='plv2' id='cool-carousel-$clone_id'>";
+			echo "<ul class='plv2' id='cool-carousel-full-width-$clone_id'>";
 		}
 
 			foreach ( $items as $item )
@@ -1052,7 +906,7 @@ if($tickeron == 0){
 				$graymode = $this->opt('coolcarousel_grayscale');
 				$boxstyling = $this->opt('coolcarousel_boxstyling');
 
-				$image = '<img class="cool-carousel-image';
+				$image = '<img class="cool-carousel-full-width-image';
 
 					if($graymode == 'gray'){ $image .= ' cc-grayscale'; }
 					if($graymode == 'graynonhover'){ $image .= ' cc-grayscale-hover'; }
@@ -1103,76 +957,11 @@ if($tickeron == 0){
 		if ( ! $content )
 			return false;
 
-		$out = sprintf('<li class="cool-carousel-item %s-item slide %s">%s</li>', $type, $post_id, do_shortcode( $content ) );
+		$out = sprintf('<li class="cool-carousel-full-width-item %s-item slide %s">%s</li>', $type, $post_id, do_shortcode( $content ) );
 
 		return $out;
 	}
 
 
 
-	function column_display( $column ) {
-		// get column data
-		global $post;
-
-		// Image
-		$coolcarousel_image = get_post_meta($post->ID, 'coolcarousel_image', true );
-		// Video
-		$cc_youtube = get_post_meta($post->ID, 'coolcarousel_youtube', true );
-		$cc_vimeo = get_post_meta($post->ID, 'coolcarousel_vimeo', true );
-		$cc_video_embed = get_post_meta($post->ID, 'coolcarousel_video_embed', true );
-		// HTML
-		$cc_code = get_post_meta($post->ID, 'coolcarousel_code', true );
-
-		// Content to Display
-		if(!empty($coolcarousel_image)){
-			$cctype = 'Image';
-		} elseif(!empty($cc_youtube)) {
-			$cctype = 'YouTube';
-		} elseif(!empty($cc_vimeo)) {
-			$cctype = 'Vimeo';
-		} elseif(!empty($cc_video_embed)) {
-			$cctype = 'Custom Video';
-		} elseif(!empty($cc_code)){
-			$cctype = 'HTML';
-		} else{
-			$cctype = '';
-		}
-
-		// display columns
-		switch ($column){
-			case 'ccmediatype':
-				echo $cctype;
-				break;
-			case 'ccimage':
-				if($cctype == 'Image')
-					echo '<img src="'.$coolcarousel_image.'" style="max-width: 80px; max-height:80px; margin: 0 auto; border: 1px solid #ccc; padding: 5px; background: #fff;" />';
-				break;
-/*
-			case 'ccimagewidth':
-				if($cctype == 'Image'){
-					list($width, $height) = getimagesize($coolcarousel_image); //doesn't work with relative URLs
-					if(is_integer($width) && is_integer($height)){
-						echo $width . ' px';
-					}
-				}
-				break;
-			case 'ccimageheight':
-				if($cctype == 'Image'){
-					list($width, $height) = getimagesize($coolcarousel_image);
-					if(is_integer($width) && is_integer($height)){
-						echo $height . ' px';
-					}
-				}
-				break;
-*/
-			case 'cclink':
-				if($cctype == 'Image'){
-					echo get_post_meta($post->ID, 'coolcarousel_image_link', true );
-				}
-				break;
-			case $this->taxID:
-				echo get_the_term_list($post->ID, 'cool-carousel-sets', '', ', ','');
-				break;
-		}
-	}
 }
