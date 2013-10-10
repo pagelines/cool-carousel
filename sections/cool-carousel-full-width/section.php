@@ -1,20 +1,20 @@
 <?php
 /*
-Section: Cool Carousel
+Section: Cool Carousel Full Width
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
 Version: 1.3
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
-Class Name: CoolCarousel
+Class Name: CoolCarouselFW
 Workswith: templates, main, header, morefoot
 Cloning: true
 v3: true
-Filter: slider
+Filter: full-width, slider
 */
 
-class CoolCarousel extends PageLinesSection {
+class CoolCarouselFW extends PageLinesSection {
 
 /*
 Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL license ( http://sam.zoy.org/wtfpl/ )

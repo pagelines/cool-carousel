@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.3 =
+* added Full Width version of Cool Carousel (2 separate sections within single plugin, only for v3/DMS, not v2/Framework)
+
 = 1.2 =
 * version bump
 
