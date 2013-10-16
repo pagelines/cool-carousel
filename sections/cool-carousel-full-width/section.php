@@ -4,7 +4,7 @@ Section: Cool Carousel Full Width
 Author: TourKick
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.3.1
+Version: 1.3.2
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarouselFW
@@ -25,18 +25,23 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 	function section_persistent() {
 
-		add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
+		add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars_fw'));
 
 	}
 
-	function coolcarousel_less_vars($less){
+	function coolcarousel_less_vars_fw($less){
 
 		if(function_exists('pl_has_editor') && pl_has_editor()){
-			$coolcarouselpath = plugins_url() . '/cool-carousel/sections/cool-carousel-full-width';
+			$coolcarouselpathfw = plugins_url() . '/cool-carousel/sections/cool-carousel-full-width';
 		} else {
-			$coolcarouselpath = plugins_url( 'pagelines-sections' ) . '/cool-carousel-full-width';
+			$coolcarouselpathfw = plugins_url( 'pagelines-sections' ) . '/cool-carousel-full-width';
 		}
-		$less['coolcarouselpath']  = '"'.$coolcarouselpath.'"'; //LESS Path must be wrapped in quotes
+
+		// ensure no mixed content warnings
+		$coolcarouselpathfw = str_replace( 'http://', '//', $coolcarouselpathfw );
+		$coolcarouselpathfw = str_replace( 'https://', '//', $coolcarouselpathfw );
+
+		$less['coolcarouselpathfw']  = '"'.$coolcarouselpathfw.'"'; //LESS Path must be wrapped in quotes
 
 		return $less;
 	}
