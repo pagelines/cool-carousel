@@ -1,10 +1,10 @@
 <?php
 /*
 Section: Cool Carousel Full Width
-Author: TourKick
+Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.3.2
+Version: 1.4
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarouselFW
@@ -742,6 +742,13 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 
 
    function section_template() {
+/*
+		if( !class_exists( 'CoolCarousel' ) ) {
+			setup_section_notify($this, __('The Cool Carousel Full Width section only works when you also have the non-full-width Cool Carousel section activated. Please activate both Cool Carousel sections or only use the non-full-width section; your choice.'), $this->id );
+			return;
+		}
+*/
+
 		if(function_exists('pl_has_editor') && pl_has_editor()){
 			$clone_id = $this->get_the_id();
 		} else {
@@ -872,7 +879,8 @@ if($tickeron == 0){
 
 		$oset = array('post_id' => $item->ID);
 
-		if ( plmeta('coolcarousel_image', $oset) )
+		if ( plmeta('coolcarousel_image', $oset)
+			|| plmeta('coolcarousel_image_media_library', $oset) )
 			return 'image';
 		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) || plmeta('coolcarousel_video_embed', $oset) )
 			return 'video';
@@ -891,7 +899,18 @@ if($tickeron == 0){
 		switch ( $type ) {
 			case 'image' :
 
-				$imagesource = plmeta('coolcarousel_image', $oset);
+				$ccimagemanual = plmeta('coolcarousel_image', $oset);
+				$ccimagelibraryid = plmeta('coolcarousel_image_media_library', $oset);
+
+				if( $ccimagemanual ){
+					$coolcarousel_image = $ccimagemanual;
+				} elseif( $ccimagelibraryid ) {
+					$ccimagelibrarysize = 'full';
+					$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
+					$coolcarousel_image = $coolcarousel_library_attributes[0];
+				}
+
+				$imagesource = $coolcarousel_image;
 					if ( $this->opt('coolcarousel_ssl') !== 'nochange' ){
 						// example: http://imagesource.jpg and https://imagesource.jpg --> //imagesource.jpg
 						$imagesource = str_replace('http:', '', $imagesource);
@@ -931,7 +950,7 @@ if($tickeron == 0){
 				$image .= '/>';
 
 				if ( $link = plmeta('coolcarousel_image_link', $oset) ){
-					if (plmeta('coolcarousel_image_target', $oset) == 'on'){
+					if (plmeta('coolcarousel_image_target', $oset)){
 						$image = sprintf('<a href="%s" target="_blank">%s</a>', $link, $image);
 					} else {
 						$image = sprintf('<a href="%s">%s</a>', $link, $image);

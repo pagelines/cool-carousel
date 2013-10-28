@@ -1,10 +1,10 @@
 <?php
 /*
 Section: Cool Carousel
-Author: TourKick
+Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.3.2
+Version: 1.4
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -15,9 +15,12 @@ Filter: slider
 */
 
 class CoolCarousel extends PageLinesSection {
-
+//to-do: full-width check for non-full-width. add custom slide class. make sure works on non-DMS and pre-1.1 DMS.
 /*
-Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL license ( http://sam.zoy.org/wtfpl/ )
+Thanks To / Included Licenses:
+	- bxSlider: http://bxslider.com
+		- released under the WTFPL license: http://sam.zoy.org/wtfpl/
+	- HM Custom Meta Boxes for WordPress: https://github.com/humanmade/Custom-Meta-Boxes
 */
 
 	var $ptID = 'cool-carousel'; // post type
@@ -25,15 +28,32 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 
 	function section_persistent() {
 
-		add_filter( 'pless_vars', array(&$this,'coolcarousel_less_vars'));
+		$themeversionnumber = get_theme_mod( 'pagelines_version' ); // Works in both DMS and Framework
+		$dmsnometapanelversion = '1.1'; // The first DMS Version that does not have post_meta_setup() as a deprecated function
+
+		if( function_exists('pl_has_editor')
+			&& pl_has_editor()
+			&& $themeversionnumber >= $dmsnometapanelversion) {
+
+	    		if( !class_exists( 'CMB_Meta_Box' ) ) {
+		    		require_once('custom-meta-boxes/custom-meta-boxes.php' );
+		    	}
+	    		include('cool-carousel-meta.php' );
+
+		} else {
+    		$this->post_meta_setup();
+    	}
+
+		$this->post_type_setup();
+
+		add_filter( 'pless_vars', array($this,'coolcarousel_less_vars'));
 
 		$this->video_hosts = array(
 			'youtube' => array('name' => __( 'YouTube', $this->id )),
 			'vimeo'   => array('name' => __( 'Vimeo', $this->id )),
 			'dailymotion'   => array('name' => __( 'Daily Motion', $this->id )),
 		);
-		$this->post_type_setup();
-		$this->post_meta_setup();
+
 	}
 
 	function coolcarousel_less_vars($less){
@@ -326,7 +346,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 				)
 		);
 		$columns = array(
-			'cb'	 		=> "<input type=\"checkbox\" />",
+			'cb'	 		=> '<input type="checkbox" />',
 			'title' 		=> 'Post Title',
 			'ccmediatype'	=> 'Media Type',
 			'ccimage' 		=> 'Image',
@@ -336,11 +356,12 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 			$this->taxID 	=> 'Cool Carousel Sets'
 		);
 
-		$this->post_type = new PageLinesPostType( $this->ptID, $args, $taxonomies, $columns, array(&$this, 'column_display'));
+		$this->post_type = new PageLinesPostType( $this->ptID, $args, $taxonomies, $columns, array($this, 'column_display'));
 	}
 
 
 
+    // only used prior to PageLines DMS v1.1 (October 2013)
 	function post_meta_setup(){
 		$type_meta_array = array(
 			'coolcarousel_directions' => array(
@@ -1018,7 +1039,8 @@ if($tickeron == 0){
 
 		$oset = array('post_id' => $item->ID);
 
-		if ( plmeta('coolcarousel_image', $oset) )
+		if ( plmeta('coolcarousel_image', $oset)
+			|| plmeta('coolcarousel_image_media_library', $oset) )
 			return 'image';
 		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) || plmeta('coolcarousel_video_embed', $oset) )
 			return 'video';
@@ -1037,7 +1059,18 @@ if($tickeron == 0){
 		switch ( $type ) {
 			case 'image' :
 
-				$imagesource = plmeta('coolcarousel_image', $oset);
+				$ccimagemanual = plmeta('coolcarousel_image', $oset);
+				$ccimagelibraryid = plmeta('coolcarousel_image_media_library', $oset);
+
+				if( $ccimagemanual ){
+					$coolcarousel_image = $ccimagemanual;
+				} elseif( $ccimagelibraryid ) {
+					$ccimagelibrarysize = 'full';
+					$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
+					$coolcarousel_image = $coolcarousel_library_attributes[0];
+				}
+
+				$imagesource = $coolcarousel_image;
 					if ( $this->opt('coolcarousel_ssl') !== 'nochange' ){
 						// example: http://imagesource.jpg and https://imagesource.jpg --> //imagesource.jpg
 						$imagesource = str_replace('http:', '', $imagesource);
@@ -1077,7 +1110,7 @@ if($tickeron == 0){
 				$image .= '/>';
 
 				if ( $link = plmeta('coolcarousel_image_link', $oset) ){
-					if (plmeta('coolcarousel_image_target', $oset) == 'on'){
+					if (plmeta('coolcarousel_image_target', $oset)){
 						$image = sprintf('<a href="%s" target="_blank">%s</a>', $link, $image);
 					} else {
 						$image = sprintf('<a href="%s">%s</a>', $link, $image);
@@ -1120,7 +1153,17 @@ if($tickeron == 0){
 		global $post;
 
 		// Image
-		$coolcarousel_image = get_post_meta($post->ID, 'coolcarousel_image', true );
+		$ccimagemanual = get_post_meta($post->ID, 'coolcarousel_image', true );
+		$ccimagelibraryid = get_post_meta($post->ID, 'coolcarousel_image_media_library', true );
+
+		if( $ccimagemanual ){
+			$coolcarousel_image = $ccimagemanual;
+		} elseif( $ccimagelibraryid ) {
+			$ccimagelibrarysize = 'full';
+			$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
+			$coolcarousel_image = $coolcarousel_library_attributes[0];
+		}
+
 		// Video
 		$cc_youtube = get_post_meta($post->ID, 'coolcarousel_youtube', true );
 		$cc_vimeo = get_post_meta($post->ID, 'coolcarousel_vimeo', true );

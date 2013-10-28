@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.4 =
+* Updated to add CPT meta boxes for PL DMS 1.1 and following
+
 = 1.3.2 =
 * Better sourcing of Cool Carousel styling images
 
