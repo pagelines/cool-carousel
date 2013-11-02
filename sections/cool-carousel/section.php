@@ -352,6 +352,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 			//'ccimagewidth'	=> 'Width',
 			//'ccimageheight'	=> 'Height',
 			'cclink'		=> 'Image Link',
+			'ccclass'		=> 'CSS Class',
 			$this->taxID 	=> 'Cool Carousel Sets'
 		);
 
@@ -1153,6 +1154,8 @@ if($tickeron == 0){
 		// get column data
 		global $post;
 
+		$ccitemclass = get_post_meta($post->ID, 'coolcarousel_item_class', true );
+
 		// Image
 		$ccimagemanual = get_post_meta($post->ID, 'coolcarousel_image', true );
 		$ccimagelibraryid = get_post_meta($post->ID, 'coolcarousel_image_media_library', true );
@@ -1224,6 +1227,11 @@ if($tickeron == 0){
 			case 'cclink':
 				if($cctype == 'Image'){
 					echo get_post_meta($post->ID, 'coolcarousel_image_link', true );
+				}
+				break;
+			case 'ccclass':
+				if(!empty($ccitemclass)){
+					echo $ccitemclass;
 				}
 				break;
 			case $this->taxID:
