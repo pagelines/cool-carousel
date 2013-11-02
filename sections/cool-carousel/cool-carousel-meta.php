@@ -49,6 +49,7 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'name' => __( 'Individual Cool Carousel IMAGE (Media Library)', 'cool_carousel' ),
 			'desc' => __( '<strong>Select from / Upload to Media Library</strong><br/>Full size image will be displayed, not a square or thumbnail version. If you want a different media size, you will need to find its URL and enter that manually, above.', 'cool_carousel' ),
 			'type' => 'file', // attachment ID
+			'size' => 'full', // default is thumbnail
 			//'cols' => 6,
 		),
 		array(
