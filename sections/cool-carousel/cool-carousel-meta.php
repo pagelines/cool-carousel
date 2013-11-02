@@ -18,7 +18,7 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'id' => 'coolcarousel_directions',
 			'name' => '',
 			'type' => 'title',
-			'desc'	=> __('<strong style="display:block;font-size:16px;color:#eaeaea;text-shadow:0 1px 0 black;padding:7px 7px 5px;background:#333;margin-top:5px;border-radius:3px;border:1px solid white;letter-spacing:0.1em;box-shadow:inset 0 0 3px black;">HOW TO USE:</strong><br/>&bull; Enter EITHER an image OR a single video field OR custom HTML.<br/>
+			'desc'	=> __('<strong style="display:block;font-size:16px;color:#eaeaea;text-shadow:0 1px 0 black;padding:2px 2px 1px;background:#333;margin-top:2px;border-radius:2px;border:1px solid white;letter-spacing:0.1em;box-shadow:inset 0 0 3px black;">HOW TO USE:</strong><br/>&bull; Enter EITHER an image OR a single video field OR custom HTML.<br/>
 						&bull; If you enter more than one, they will be in this priority: Image (Manual), Image (Media Library), Video, Custom HTML.<br/>
 						&bull; <strong>All images in the same set/category should have the same <em>width</em>.</strong><br/>
 						&bull; Consider naming your sets/categories with a <em>width</em> indicator, like "Favorite Images (600w)".<br/>
@@ -35,11 +35,11 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'id' => 'coolcarousel_image',
 			'name' => __( 'Individual Cool Carousel IMAGE (Manual Input)', 'cool_carousel' ),
 			'desc' => __( 'Full URL to Image File', 'cool_carousel' ),
-			'type' => 'text', // attachment ID
+			'type' => 'text',
 			//'cols' => 6,
 		),
 		array(
-			'id' => 'coolcarousel_directions_image_options',
+			'id' => 'coolcarousel_directions_image_or',
 			'name' => __( 'OR', 'cool_carousel' ),
 			'type' => 'title',
 			//'cols' => 6,
@@ -49,6 +49,28 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'name' => __( 'Individual Cool Carousel IMAGE (Media Library)', 'cool_carousel' ),
 			'desc' => __( '<strong>Select from / Upload to Media Library</strong><br/>Full size image will be displayed, not a square or thumbnail version. If you want a different media size, you will need to find its URL and enter that manually, above.', 'cool_carousel' ),
 			'type' => 'file', // attachment ID
+			//'cols' => 6,
+		),
+		array(
+			'id' => 'coolcarousel_image_media_library_size',
+			'name' => __( 'Image Size from Media Library. Default: full. FYI: Is not a "smart" drop-down list. You may not have all sizes or may have other sizes available.', 'cool_carousel' ),
+			'type' => 'select',
+			'options' => array(
+			    'full' => __( 'Full Size (Default)', 'cool_carousel' ),
+			    'large' => __( 'Large', 'cool_carousel' ),
+			    'medium' => __( 'Medium', 'cool_carousel' ),
+			    'thumbnail' => __( 'Thumbnail', 'cool_carousel' ),
+			    'aspect-thumb' => __( 'PL Aspect Thumb', 'cool_carousel' ),
+			    'basic-thumb' => __( 'PL Basic Thumb', 'cool_carousel' ),
+			    'landscape-thumb' => __( 'PL Landscape Thumb', 'cool_carousel' ),
+			),
+			//'allow_none' => true,
+			//'cols' => 6,
+   		),
+		array(
+			'id' => 'coolcarousel_directions_image_options',
+			'name' => __( 'Image Options', 'cool_carousel' ),
+			'type' => 'title',
 			//'cols' => 6,
 		),
 		array(
@@ -122,6 +144,19 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'name' => __( 'Custom HTML', 'cool_carousel' ),
 			'desc' => __( '(e.g. <a href="http://www.w3schools.com/tags/tag_iframe.asp" target="_blank">iframe a page</a>, <a href="http://wordpress.org/plugins/google-document-embedder/" target="_blank">embed a PDF</a>, etc.)<br/>Shortcodes work too (e.g. <a href="http://demo.pagelines.me/tools/" target="_blank">PageLines Google Maps</a>)<br/>Warning: phones and tablets won\'t respect iframe height and will display full height of iframed page (i.e. not cool).<br/>Does NOT allow plain text.', 'cool_carousel' ),
 			'type' => 'textarea',
+			//'cols' => 6,
+		),
+		array(
+			'id' => 'coolcarousel_directions_all',
+			'name' => __( 'Options for All Types', 'cool_carousel' ),
+			'type' => 'title',
+			//'cols' => 6,
+		),
+		array(
+			'id' => 'coolcarousel_item_class',
+			'name' => __( 'Individual CSS Class', 'cool_carousel' ),
+			'desc' => __( 'Optional', 'cool_carousel' ),
+			'type' => 'text',
 			//'cols' => 6,
 		),
 

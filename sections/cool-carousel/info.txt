@@ -4,6 +4,11 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.5 =
+* Can now select Media Library image size (not a "smart" drop-down field)
+* Can now add custom class to each Cool Carousel Item (bottom of post editor screen)
+* More details in wp-admin columns
+
 = 1.4 =
 * Updated to add CPT meta boxes for PL DMS 1.1 and following
 

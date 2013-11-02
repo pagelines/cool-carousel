@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.4
+Version: 1.5
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -15,7 +15,6 @@ Filter: slider
 */
 
 class CoolCarousel extends PageLinesSection {
-//to-do: full-width check for non-full-width. add custom slide class. make sure works on non-DMS and pre-1.1 DMS.
 /*
 Thanks To / Included Licenses:
 	- bxSlider: http://bxslider.com
@@ -1042,7 +1041,7 @@ if($tickeron == 0){
 		if ( plmeta('coolcarousel_image', $oset)
 			|| plmeta('coolcarousel_image_media_library', $oset) )
 			return 'image';
-		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) || plmeta('coolcarousel_video_embed', $oset) )
+		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) )
 			return 'video';
 		if ( plmeta('coolcarousel_code', $oset) )
 			return 'code';
@@ -1061,11 +1060,11 @@ if($tickeron == 0){
 
 				$ccimagemanual = plmeta('coolcarousel_image', $oset);
 				$ccimagelibraryid = plmeta('coolcarousel_image_media_library', $oset);
+				$ccimagelibrarysize = plmeta('coolcarousel_image_media_library_size', $oset) ? plmeta('coolcarousel_image_media_library_size', $oset) : 'full';
 
 				if( $ccimagemanual ){
 					$coolcarousel_image = $ccimagemanual;
 				} elseif( $ccimagelibraryid ) {
-					$ccimagelibrarysize = 'full';
 					$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
 					$coolcarousel_image = $coolcarousel_library_attributes[0];
 				}
@@ -1141,7 +1140,9 @@ if($tickeron == 0){
 		if ( ! $content )
 			return false;
 
-		$out = sprintf('<li class="cool-carousel-item %s-item slide %s">%s</li>', $type, $post_id, do_shortcode( $content ) );
+		$ccitemclass = plmeta('coolcarousel_item_class', $oset) ? plmeta('coolcarousel_item_class', $oset) : '';
+
+		$out = sprintf('<li class="cool-carousel-item %s %s-item slide %s">%s</li>', $ccitemclass, $type, $post_id, do_shortcode( $content ) );
 
 		return $out;
 	}
@@ -1155,31 +1156,29 @@ if($tickeron == 0){
 		// Image
 		$ccimagemanual = get_post_meta($post->ID, 'coolcarousel_image', true );
 		$ccimagelibraryid = get_post_meta($post->ID, 'coolcarousel_image_media_library', true );
+		$ccimagelibrarysize = get_post_meta($post->ID, 'coolcarousel_image_media_library_size', true );
 
 		if( $ccimagemanual ){
 			$coolcarousel_image = $ccimagemanual;
 		} elseif( $ccimagelibraryid ) {
-			$ccimagelibrarysize = 'full';
 			$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
 			$coolcarousel_image = $coolcarousel_library_attributes[0];
 		}
 
 		// Video
-		$cc_youtube = get_post_meta($post->ID, 'coolcarousel_youtube', true );
-		$cc_vimeo = get_post_meta($post->ID, 'coolcarousel_vimeo', true );
-		$cc_video_embed = get_post_meta($post->ID, 'coolcarousel_video_embed', true );
+		if(get_post_meta($post->ID, 'coolcarousel_video_site', true )
+		   && get_post_meta($post->ID, 'coolcarousel_video_id', true )){
+			$cc_video_site = get_post_meta($post->ID, 'coolcarousel_video_site', true );
+			$cc_video_id = get_post_meta($post->ID, 'coolcarousel_video_id', true );
+		}
 		// HTML
 		$cc_code = get_post_meta($post->ID, 'coolcarousel_code', true );
 
 		// Content to Display
 		if(!empty($coolcarousel_image)){
 			$cctype = 'Image';
-		} elseif(!empty($cc_youtube)) {
-			$cctype = 'YouTube';
-		} elseif(!empty($cc_vimeo)) {
-			$cctype = 'Vimeo';
-		} elseif(!empty($cc_video_embed)) {
-			$cctype = 'Custom Video';
+		} elseif(!empty($cc_video_site)) {
+			$cctype = 'Video';
 		} elseif(!empty($cc_code)){
 			$cctype = 'HTML';
 		} else{
@@ -1189,7 +1188,16 @@ if($tickeron == 0){
 		// display columns
 		switch ($column){
 			case 'ccmediatype':
-				echo $cctype;
+				echo "<strong>$cctype</strong>";
+				if($cctype == 'Image' && $ccimagemanual) {
+					echo ' - <em>Manual</em>';
+				} elseif($cctype == 'Image' && $ccimagelibraryid) {
+					echo " - <em>Library</em><br/>Size: <em>$ccimagelibrarysize</em>";
+				} elseif($cctype == 'Video') {
+					echo " - <em>$cc_video_site</em> - <em>$cc_video_id</em>";
+				} else {
+					echo '';
+				}
 				break;
 			case 'ccimage':
 				if($cctype == 'Image')

@@ -4,7 +4,7 @@ Section: Cool Carousel Full Width
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.4
+Version: 1.5
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarouselFW
@@ -744,7 +744,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
    function section_template() {
 /*
 		if( !class_exists( 'CoolCarousel' ) ) {
-			setup_section_notify($this, __('The Cool Carousel Full Width section only works when you also have the non-full-width Cool Carousel section activated. Please activate both Cool Carousel sections or only use the non-full-width section; your choice.'), $this->id );
+			echo setup_section_notify($this, __('The Cool Carousel Full Width section only works when you also have the non-full-width Cool Carousel section activated. Please activate both Cool Carousel sections or only use the non-full-width section; your choice.'), $this->id );
 			return;
 		}
 */
@@ -882,7 +882,7 @@ if($tickeron == 0){
 		if ( plmeta('coolcarousel_image', $oset)
 			|| plmeta('coolcarousel_image_media_library', $oset) )
 			return 'image';
-		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) || plmeta('coolcarousel_video_embed', $oset) )
+		if ( (plmeta('coolcarousel_video_site', $oset) && plmeta('coolcarousel_video_id', $oset )) )
 			return 'video';
 		if ( plmeta('coolcarousel_code', $oset) )
 			return 'code';
@@ -901,11 +901,11 @@ if($tickeron == 0){
 
 				$ccimagemanual = plmeta('coolcarousel_image', $oset);
 				$ccimagelibraryid = plmeta('coolcarousel_image_media_library', $oset);
+				$ccimagelibrarysize = plmeta('coolcarousel_image_media_library_size', $oset) ? plmeta('coolcarousel_image_media_library_size', $oset) : 'full';
 
 				if( $ccimagemanual ){
 					$coolcarousel_image = $ccimagemanual;
 				} elseif( $ccimagelibraryid ) {
-					$ccimagelibrarysize = 'full';
 					$coolcarousel_library_attributes = wp_get_attachment_image_src( $ccimagelibraryid, $ccimagelibrarysize );
 					$coolcarousel_image = $coolcarousel_library_attributes[0];
 				}
@@ -981,7 +981,9 @@ if($tickeron == 0){
 		if ( ! $content )
 			return false;
 
-		$out = sprintf('<li class="cool-carousel-full-width-item %s-item slide %s">%s</li>', $type, $post_id, do_shortcode( $content ) );
+		$ccitemclass = plmeta('coolcarousel_item_class', $oset) ? plmeta('coolcarousel_item_class', $oset) : '';
+
+		$out = sprintf('<li class="cool-carousel-full-width-item %s %s-item slide %s">%s</li>', $ccitemclass, $type, $post_id, do_shortcode( $content ) );
 
 		return $out;
 	}
