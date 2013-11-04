@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 add_filter( 'cmb_meta_boxes', 'cool_carousel_metaboxes' );
 function cool_carousel_metaboxes( array $meta_boxes ) {
 
+	$mediasizesmanual = array('full');
+	$mediasizesauto = get_intermediate_image_sizes();
+	$mediasizes = array_merge($mediasizesmanual, $mediasizesauto);
+
 	$opts = array(
 		array(
 			'id' => 'coolcarousel_directions',
@@ -47,26 +51,18 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 		array(
 			'id' => 'coolcarousel_image_media_library',
 			'name' => __( 'Individual Cool Carousel IMAGE (Media Library)', 'cool_carousel' ),
-			'desc' => __( '<strong>Select from / Upload to Media Library</strong><br/>Full size image will be displayed, not a square or thumbnail version. If you want a different media size, you will need to find its URL and enter that manually, above.', 'cool_carousel' ),
+			'desc' => __( '<strong>Select from / Upload to Media Library</strong>', 'cool_carousel' ),
 			'type' => 'file', // attachment ID
 			'size' => 'full', // default is thumbnail
-			//'cols' => 6,
+			'cols' => 7,
 		),
 		array(
 			'id' => 'coolcarousel_image_media_library_size',
-			'name' => __( 'Image Size from Media Library. Default: full. FYI: Is not a "smart" drop-down list. You may not have all sizes or may have other sizes available.', 'cool_carousel' ),
+			'name' => __( 'Image Size from Media Library. Default: full.', 'cool_carousel' ),
 			'type' => 'select',
-			'options' => array(
-			    'full' => __( 'Full Size (Default)', 'cool_carousel' ),
-			    'large' => __( 'Large', 'cool_carousel' ),
-			    'medium' => __( 'Medium', 'cool_carousel' ),
-			    'thumbnail' => __( 'Thumbnail', 'cool_carousel' ),
-			    'aspect-thumb' => __( 'PL Aspect Thumb', 'cool_carousel' ),
-			    'basic-thumb' => __( 'PL Basic Thumb', 'cool_carousel' ),
-			    'landscape-thumb' => __( 'PL Landscape Thumb', 'cool_carousel' ),
-			),
-			//'allow_none' => true,
-			//'cols' => 6,
+			'options' => $mediasizes,
+			'allow_none' => true,
+			'cols' => 5,
    		),
 		array(
 			'id' => 'coolcarousel_directions_image_options',

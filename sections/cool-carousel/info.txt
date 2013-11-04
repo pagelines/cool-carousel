@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.6 =
+* Media Library image size is now a smart drop-down field and allows for "None" (which defaults to "full")
+
 = 1.5 =
 * Can now select Media Library image size (not a "smart" drop-down field)
 * Can now add custom class to each Cool Carousel Item (bottom of post editor screen)
