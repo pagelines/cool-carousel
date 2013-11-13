@@ -1,3 +1,5 @@
+//@coolcarouselpath is set via section.php
+@ccCaptionTextAlign: center; //only set here globally, not also set in Full-Width style.less
 @ccCaptionBg: rgba(80, 80, 80, 0.75);
 @plImageFrameShadow: rgba(0, 0, 0, 0.3);
 
@@ -58,7 +60,7 @@
 		.cc-pager {
 			text-align: center;
 			font-size: .85em;
-			font-family: Arial;
+			//font-family: Arial;
 			font-weight: bold;
 			color: @textColorSubtle;
 			padding-top: 20px;
@@ -178,11 +180,12 @@
 			background: @textColorSubtle\9;
 			background: @ccCaptionBg;
 			width: 100%;
+			text-align: @ccCaptionTextAlign;
 		}
 
 		.cc-caption span {
 			color: @pl-base;
-			font-family: Arial;
+			//font-family: Arial;
 			display: block;
 			font-size: .85em;
 			padding: 10px;

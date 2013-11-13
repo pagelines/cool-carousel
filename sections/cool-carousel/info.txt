@@ -4,6 +4,12 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.7 =
+* Now moveSlides can be less than minSlides
+* Help text added to maxSlides option
+* Captions are now text-align:center by default (use Custom LESS/CSS to override, if desired)
+* Removed font-family:Arial from pager and captions
+
 = 1.6 =
 * Media Library image size is now a smart drop-down field and allows for "None" (which defaults to "full")
 

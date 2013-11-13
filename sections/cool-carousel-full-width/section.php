@@ -4,7 +4,7 @@ Section: Cool Carousel Full Width
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.6
+Version: 1.7
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarouselFW
@@ -166,10 +166,10 @@ Included Licenses: bxSlider ( http://bxslider.com ) released under the WTFPL lic
 				$maxslides = $minslides;
 			}
 
-			if(!empty($moveslides) && ($minslides > $moveslides) ){ // Move must be >= Min
+			if(isset($moveslides) && ($moveslides < 1) ){ // isset instead of !empty because trying to get rid of zero value
 				unset($moveslides);
 			}
-			if(!empty($moveslides) && ($maxslides < $moveslides) ){ // Move must be <= Max
+			if(isset($moveslides) && ($maxslides < $moveslides) ){ // Move must be <= Max
 				unset($moveslides);
 			}
 		}
@@ -373,12 +373,12 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'coolcarousel_maxslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.<br/>Suggestion: <a href="http://forum.pagelines.com/topic/31338-minimum-slides-maximum-slides-slides-to-move/?p=185976" target="_blank">Reduce the slideWidth option for this to take effect.</a>', $this->id ),
 					),
 					'coolcarousel_moveslides' => array(
 						'type' 			=> 'text_small',
 						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be >= minSlides and <= maxSlides.', $this->id ),
+						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be <= maxSlides.', $this->id ),
 					),
 					'coolcarousel_slidewidth' => array(
 						'type' 			=> 'text_small',
