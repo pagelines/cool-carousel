@@ -16,6 +16,7 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 	$mediasizesmanual = array('full');
 	$mediasizesauto = get_intermediate_image_sizes();
 	$mediasizes = array_merge($mediasizesmanual, $mediasizesauto);
+	$mediasizes = array_combine($mediasizes,$mediasizes); //this will change the key index with its value for every item
 
 	$opts = array(
 		array(
@@ -53,7 +54,7 @@ function cool_carousel_metaboxes( array $meta_boxes ) {
 			'name' => __( 'Individual Cool Carousel IMAGE (Media Library)', 'cool_carousel' ),
 			'desc' => __( '<strong>Select from / Upload to Media Library</strong>', 'cool_carousel' ),
 			'type' => 'file', // attachment ID
-			'size' => 'full', // default is thumbnail
+			//'size' => '', // default selection, even after one was previously selected (i.e. accidental override of previous selection)
 			'cols' => 7,
 		),
 		array(

@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8 =
+* Fixed wp-admin image size options (props Jordi)
+
 = 1.7 =
 * Now moveSlides can be less than minSlides
 * Help text added to maxSlides option
