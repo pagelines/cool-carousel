@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8.1 =
+* Added styling for removing lines around Cool Carousel. Screenshots and how-to at http://www.pagelinestheme.com/remove-cool-carousel-lines/
+
 = 1.8 =
 * Fixed wp-admin image size options (props Jordi)
 

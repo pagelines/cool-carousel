@@ -8,5 +8,5 @@ Description: A responsive carousel/slider with left, right, up, down, or fade tr
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 PageLines: true
 Class Name: CoolCarousel
-Version: 1.8
+Version: 1.8.1
 */
