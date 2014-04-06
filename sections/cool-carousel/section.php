@@ -4,7 +4,7 @@ Section: Cool Carousel
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.8.1
+Version: 1.8.2
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -336,7 +336,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 				'description' 		=> __( 'Cool Carousel Slides', $this->id ),
 				'capability_type'	=> 'page',
 				'supports'			=> array( 'title' ),
-				'menu_icon'			=> $this->icon,
+				'menu_icon'			=> $this->base_url.'/icon.png',
 			);
 		$taxonomies = array(
 			$this->taxID => array(
@@ -460,7 +460,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 		$type_metatab_settings = array(
 			'id' 		=> 'cool-carousel-type-metatab',
 			'name' 		=> 'Cool Carousel Post',
-			'icon' 		=> $this->icon,
+			'icon' 		=> $this->base_url.'/icon.png',
 		);
 
 		$coolcarousel_meta_panel->register_tab( $type_metatab_settings, $type_meta_array );
@@ -895,15 +895,23 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 
 		);
 
-		$tab_settings = array(
-				'id' 		=> 'coolcarousel_meta',
-				'name' 		=> 'Cool Carousel',
-				'icon' 		=> $this->icon,
-				'clone_id'	=> $settings['clone_id'],
-				'active'	=> $settings['active']
-			);
+		$themeversionnumber = get_theme_mod( 'pagelines_version' ); // Works in both DMS and Framework
+		$dmsnoregistermetatabversion = '1.2'; //DMS 2 (v1.2) -- Notice: register_metatab is deprecated since version 1.2 of PageLines DMS! Use section_opts() instead.
+		if( function_exists('pl_has_editor')
+			&& pl_has_editor()
+			&& $themeversionnumber >= $dmsnoregistermetatabversion) {
+				//nothing
+		} else {
+			$tab_settings = array(
+					'id' 		=> 'coolcarousel_meta',
+					'name' 		=> 'Cool Carousel',
+					'icon' 		=> $this->base_url.'/icon.png',
+					'clone_id'	=> $settings['clone_id'],
+					'active'	=> $settings['active']
+				);
 
-		register_metatab($tab_settings, $tab);
+			register_metatab($tab_settings, $tab);
+    	}
 	}
 
 
