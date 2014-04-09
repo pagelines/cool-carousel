@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8.3 =
+* Fix for prev/next arrow hovering in DMS 2. Minor issue described in detail at http://forum.pagelines.com/topic/33906-problems-with-carousel-navigational-arrows/?p=201459
+
 = 1.8.2 =
 * Fixes for WP_DEBUG notices from DMS 2 changes. No change in functionality.
 
