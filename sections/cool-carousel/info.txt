@@ -5,7 +5,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 == Changelog ==
 
 = 1.8.4 =
-* Fix for options not appearing in DMS 2. Note: Prior versions had 2 separate sections (one Content Width and one Full-Width). DMS 2 has an automatic 'dual-width' option that is now being used so all your Full-Width Cool Carousels created prior to this version will need to be re-created after updating to this version.
+* DO NOT update unless running DMS 2.
+* Fix for options not appearing in DMS 2.
+* NOTE: Prior versions had 2 separate sections (one Content Width and one Full-Width). DMS 2 has an automatic 'dual-width' option that makes the single section turn into two sections within the DMS Editor. This functionality is now being used so all your Full-Width Cool Carousels created prior to this version WILL DISAPPEAR (you'd need to re-create them from scratch) after updating to this version.
 
 = 1.8.3 =
 * Fix for prev/next arrow hovering in DMS 2. Minor issue described in detail at http://forum.pagelines.com/topic/33906-problems-with-carousel-navigational-arrows/?p=201459
