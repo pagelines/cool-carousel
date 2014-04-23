@@ -4,14 +4,14 @@ Section: Cool Carousel
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.8.3
+Version: 1.8.4
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
 Workswith: templates, main, header, morefoot
 Cloning: true
 v3: true
-Filter: slider
+Filter: slider, dual-width
 */
 
 class CoolCarousel extends PageLinesSection {
@@ -468,451 +468,479 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 
 
 
-	function section_optionator( $settings ){
+	function section_opts(){
 
-		$settings = wp_parse_args($settings, $this->optionator_default);
+		$options = array();
 
-		$tab = array(
-
-			'coolcarousel_setup_a' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;"><i class="icon-power-off"></i> Cool Carousel Setup</span>', $this->id ),
-				'shortexp'	=> __( 'Pick your Cool Carousel Set and # of Slides', $this->id ),
-				'exp'		=> __( 'You may want to order Cool Carousel Slides using a post type order plugin for WordPress. However, if you would like to do it algorithmically, we have provided these options for you.', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_set' => array(
-						'type' 			=> 'select_taxonomy',
-						'taxonomy_id'	=> $this->taxID,
-						'inputlabel'	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Cool Carousel Set To Show</span><br/>Default: All Slides from All Sets', $this->id ),
-					),
-					'coolcarousel_totalslides' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to Query For (in chosen C.C. Set)</span><br/>Default: unlimited<br/>', $this->id ),
-					),
-/*
-// PageLines fitvid already handled via shortcode
-					'coolcarousel_video' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( True, $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Does this Cool Carousel Set have one or more videos?</span><br/>Default: False', $this->id ),
-					),
-*/
-					'coolcarousel_orderby' => array(
-						'type'			=> 'select',
-						//'default'		=> 'ID',
-						'inputlabel'	=> '<span style="color:#800000;"><i class="icon-angle-down"></i> Order Cool Carousel By</span> (Leave blank if using Post Type Order Plugin)',
-						'selectvalues' => array(
-							'ID' 		=> array('name' => __( 'Post ID', $this->id ) ),
-							'title' 	=> array('name' => __( 'Title', $this->id ) ),
-							'date' 		=> array('name' => __( 'Date', $this->id ) ),
-							'modified' 	=> array('name' => __( 'Last Modified', $this->id ) ),
-							'rand' 		=> array('name' => __( 'Random', $this->id ) ),
-						)
-					),
-					'coolcarousel_order' => array(
-							//'default' => 'DESC',
-							'type' => 'select',
-							'selectvalues' => array(
-								//'DESC' 		=> array('name' => __( 'Descending (Default)', $this->id ) ),
-								'ASC' 		=> array('name' => __( 'Ascending', $this->id ) ),
-							),
-							'inputlabel'=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Select sort order</span><br/>Default: Descending', $this->id ),
-					),
-//coolcarousel_startSlide
-//coolcarousel_randomStart
-//coolcarousel_slideSelector
-					'coolcarousel_mode' => array(
-						'type' => 'select',
-						'selectvalues' => array(
-							'fade' => array('name' => __( 'Fade', $this->id )),
-							'vertical' => array('name' => __( 'Vertical', $this->id )),
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Mode</span><br/>Default: Horizontal', $this->id )
-					),
-					'coolcarousel_minslides' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Min # of Slides to be Shown (N/A for Fade mode)</span><br/>Default: 1', $this->id ),
-					),
-					'coolcarousel_maxslides' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.<br/>Suggestion: <a href="http://forum.pagelines.com/topic/31338-minimum-slides-maximum-slides-slides-to-move/?p=185976" target="_blank">Reduce the slideWidth option for this to take effect.</a>', $this->id ),
-					),
-					'coolcarousel_moveslides' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be <= maxSlides.', $this->id ),
-					),
-					'coolcarousel_slidewidth' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Width of each slide</span><br/>Default: 2000 (pixels, responsive)', $this->id ),
-					),
-					'coolcarousel_speed' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Slide transition speed/duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id ),
-					),
-					'coolcarousel_slidemargin' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Margin between each slide (pixels)</span><br/>Default: 0', $this->id ),
+		$options[] = array(
+			'key'		=> 'coolcarousel_setup_a',
+			'type'		=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;"><i class="icon-power-off"></i> Cool Carousel Setup</span><br/>Pick your Cool Carousel Set and # of Slides', $this->id),
+			'help'		=> 'You may want to order Cool Carousel Slides using a post type order plugin for WordPress. However, if you would like to do it algorithmically, we have provided these options for you.',
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_set',
+					'type'		=> 'select_taxonomy',
+					//'default'	=> '',
+					'taxonomy_id'	=> $this->taxID,
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Cool Carousel Set To Show</span><br/>Default: All Slides from All Sets', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_totalslides',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to Query For (in chosen C.C. Set)</span><br/>Default: unlimited<br/>', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_orderby',
+					'type'		=> 'select',
+					//'default'	=> 'ID',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Order Cool Carousel By</span> (Leave blank if using Post Type Order Plugin)', $this->id),
+					'opts' => array(
+						'ID' 		=> array('name' => __( 'Post ID', $this->id ) ),
+						'title' 	=> array('name' => __( 'Title', $this->id ) ),
+						'date' 		=> array('name' => __( 'Date', $this->id ) ),
+						'modified' 	=> array('name' => __( 'Last Modified', $this->id ) ),
+						'rand' 		=> array('name' => __( 'Random', $this->id ) ),
+					)
+				),
+				array(
+					'key'		=> 'coolcarousel_order',
+					'type'		=> 'select',
+					//'default' => 'DESC',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Select sort order</span><br/>Default: Descending', $this->id),
+					'opts' => array(
+						//'DESC' 		=> array('name' => __( 'Descending (Default)', $this->id ) ),
+						'ASC' 		=> array('name' => __( 'Ascending', $this->id ) ),
 					),
 				),
-			),
-
-
-			'coolcarousel_setup_b' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;">Cool Carousel Basic Play Options</span>', $this->id ),
-				'shortexp'	=> __( 'Frequently used options', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_infiniteloop' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Infinite Loop</span><br/>Default: ON', $this->id ),
-					),
-					'coolcarousel_hidecontrolonend' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Hide Control On End YES', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Hide Control On End</span><br/>Default: NO', $this->id ),
-					),
-					'coolcarousel_easing' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'swing'	=> array('name' => __( 'Swing', $this->id ) ),
-							'easeInQuad'		=> array('name' => __( 'easeInQuad', $this->id ) ),
-							'easeOutQuad'	=> array('name' => __( 'easeOutQuad', $this->id ) ),
-							'easeInOutQuad'	=> array('name' => __( 'easeInOutQuad', $this->id ) ),
-							'easeInCubic' => array('name' => __( 'easeInCubic', $this->id ) ),
-							'easeOutCubic' => array('name' => __( 'easeOutCubic', $this->id ) ),
-							'easeInOutCubic' => array('name' => __( 'easeInOutCubic', $this->id ) ),
-							'easeInQuart' => array('name' => __( 'easeInQuart', $this->id ) ),
-							'easeOutQuart' => array('name' => __( 'easeOutQuart', $this->id ) ),
-							'easeInOutQuart' => array('name' => __( 'easeInOutQuart', $this->id ) ),
-							'easeInQuint' => array('name' => __( 'easeInQuint', $this->id ) ),
-							'easeOutQuint' => array('name' => __( 'easeOutQuint', $this->id ) ),
-							'easeInOutQuint' => array('name' => __( 'easeInOutQuint', $this->id ) ),
-							'easeInSine' => array('name' => __( 'easeInSine', $this->id ) ),
-							'easeOutSine' => array('name' => __( 'easeOutSine', $this->id ) ),
-							'easeInOutSine' => array('name' => __( 'easeInOutSine', $this->id ) ),
-							'easeInExpo' => array('name' => __( 'easeInExpo', $this->id ) ),
-							'easeOutExpo' => array('name' => __( 'easeOutExpo', $this->id ) ),
-							'easeInOutExpo' => array('name' => __( 'easeInOutExpo', $this->id ) ),
-							'easeInCirc' => array('name' => __( 'easeInCirc', $this->id ) ),
-							'easeOutCirc' => array('name' => __( 'easeOutCirc', $this->id ) ),
-							'easeInOutCirc' => array('name' => __( 'easeInOutCirc', $this->id ) ),
-							'easeInElastic' => array('name' => __( 'easeInElastic', $this->id ) ),
-							'easeOutElastic' => array('name' => __( 'easeOutElastic', $this->id ) ),
-							'easeInOutElastic' => array('name' => __( 'easeInOutElastic', $this->id ) ),
-							'easeInBack' => array('name' => __( 'easeInBack', $this->id ) ),
-							'easeOutBack' => array('name' => __( 'easeOutBack', $this->id ) ),
-							'easeInOutBack' => array('name' => __( 'easeInOutBack', $this->id ) ),
-							'easeInBounce' => array('name' => __( 'easeInBounce', $this->id ) ),
-							'easeOutBounce' => array('name' => __( 'easeOutBounce', $this->id ) ),
-							'easeInOutBounce' => array('name' => __( 'easeInOutBounce', $this->id ) ),
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Easing (N/A for Fade mode)</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id ),
-					),
-					'coolcarousel_ticker' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Ticker Mode ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker / Scrolling News Mode (N/A Fade mode)</span><br/>Default: OFF<br/>If Ticker is ON, Pager and Controls are OFF.<br/>Note: Ticker Speed = <em>Slide Transition Speed</em> divided by <em>calculated width</em> of all included items (e.g. 600w x 10 images = 6000) --> 500ms / 6000w = .08s (i.e. too fast). FYI: Calculated width is NOT controllable. It\'s dependent upon the actual image dimensions.', $this->id ),
-					),
-					'coolcarousel_tickerhover' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Ticker Pause on Hover ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker Hover</span><br/>Default: OFF', $this->id ),
-					),
-					'coolcarousel_adaptiveheight' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Adaptive Height ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive / Dynamic Slider Height</span><br/>Default: OFF<br/>Always ON for sliders in Vertical mode.', $this->id ),
-					),
-					'coolcarousel_adaptiveheightspeed' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive Height Transition Speed/Duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id ),
-					),
-/*
-					'coolcarousel_responsive' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'Responsive OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Responsive Slider</span><br/>Default: ON', $this->id ),
-					),
-*/
-//coolcarousel_useCSS
-					'coolcarousel_preloadimages' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'all'		=> array('name' => __( 'Preload ALL', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Preload Images Before Starting Slider</span><br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all Slides are identical dimensions.', $this->id ),
+				array(
+					'key'		=> 'coolcarousel_mode',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Mode</span><br/>Default: Horizontal', $this->id),
+					'opts' => array(
+						'fade' => array('name' => __( 'Fade', $this->id )),
+						'vertical' => array('name' => __( 'Vertical', $this->id )),
 					),
 				),
-			),
-
-			'coolcarousel_setup_c' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;">Cool Carousel Images-Only Options</span>', $this->id ),
-				'shortexp'	=> __( 'Disable Touch Swiping or Control Touch Options', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_ssl' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'nochange'		=> array('name' => __( 'DO NOT Change Image Source', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Image Source SSL/HTTPS</span><br/>Default: change image source to work with both HTTP and HTTPS URLs<br/>If one or more of your images CANNOT be served via both HTTP and HTTPS, change this option so you do not get "not found" errors.', $this->id ),
-					),
-					'coolcarousel_captions' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Captions ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF<br/>FYI: Captions span entire slide width, not just width of image if image is narrower than the slide.', $this->id ),
-					),
-					'coolcarousel_grayscale' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'gray'		=> array('name' => __( 'Grayscale ON', $this->id ) ),
-							'graynonhover' => array('name' => __( 'Grayscale ON, Color on Hover', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>FYI: IE10 will display 70% opacity but not grayscale.', $this->id ),
-					),
-					'coolcarousel_boxstyling' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
-							'plimageframehover'		=> array('name' => __( 'PageLines Image Frame on Hover', $this->id ) ),
-							'plimageframe'		=> array('name' => __( 'PageLines Image Frame ON', $this->id ) ),
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF<br/>Only use when there are multiple slides displayed at a time (Min # of slides to be shown > 1).', $this->id ),
-					),
+				array(
+					'key'		=> 'coolcarousel_minslides',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Min # of Slides to be Shown (N/A for Fade mode)</span><br/>Default: 1', $this->id)
 				),
-
-			),
-
-
-			'coolcarousel_setup_d' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;">Cool Carousel Navigation</span>', $this->id ),
-				'shortexp'	=> __( 'Next, Previous, Start, Stop, etc.', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_pager' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'Pager OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager</span><br/>Default: ON', $this->id ),
-					),
-					'coolcarousel_pagertype' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'short'		=> array('name' => __( 'Pager Type SHORT', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Type</span><br/>Example of "short" -> x of y &rarr; 1 / 5<br/>Example of "full" -> circle links below slider<br/>Default: FULL', $this->id ),
-					),
-					'coolcarousel_pagershortseparator' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Separator (only when Pager Type is "short")</span><br/>Default: "/" (without quotes)<br/>One space on each side of separator will be added.', $this->id ),
-					),
-//coolcarousel_pagerSelector
-//coolcarousel_pagerCustom
-//coolcarousel_buildPager
-					'coolcarousel_controls' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'Next/Prev Controls OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Next/Prev Controls</span><br/>Default: ON', $this->id ),
-					),
-					'coolcarousel_nextprevlocation' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Location of Custom Next/Prev Text</span><br/>Default: After/Below<br/>Only applies if Custom Next Text and/or Custom Prev Text is added.<br/>If Custom Text is used, navigation arrows are NOT displayed over the slides.', $this->id ),
-					),
-					'coolcarousel_nexttext' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next Text</span><br/>Default: "Next" (without quotes)<br/>Try the "icon-chevron-sign-right" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Right".', $this->id ),
-					),
-					'coolcarousel_prevtext' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Prev Text</span><br/>Default: "Prev" (without quotes)<br/>Try the "icon-chevron-sign-left" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Left".', $this->id ),
-					),
-					'coolcarousel_nextprevdivider' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next/Prev Divider</span><br/>Default: N/A<br/>Try an <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "---".', $this->id ),
-					),
-//coolcarousel_nextSelector
-//coolcarousel_prevSelector
+				array(
+					'key'		=> 'coolcarousel_maxslides',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.<br/>Suggestion: <a href="http://forum.pagelines.com/topic/31338-minimum-slides-maximum-slides-slides-to-move/?p=185976" target="_blank">Reduce the slideWidth option for this to take effect.</a>', $this->id)
 				),
-			),
-
-			'coolcarousel_setup_e' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;">Cool Carousel Slideshow / Auto Play Mode</span>', $this->id ),
-				'shortexp'	=> __( 'Auto Transition, Auto Start, etc.', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_auto' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'YES Auto Play/Transition', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Play / Continual Transition</span><br/>Default: OFF', $this->id ),
-					),
-					'coolcarousel_autostart' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'OFF Must first click Play/Start', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Start the Auto Play</span><br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id ),
-					),
-					'coolcarousel_autodirection' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'prev'		=> array('name' => __( 'Prev', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Direction</span><br/>Default: Next<br/>The direction of auto show slide transitions', $this->id ),
-					),
-					'coolcarousel_autocontrols' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Auto Controls ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Start/Stop Controls</span><br/>Default: OFF', $this->id ),
-					),
-					'coolcarousel_startstoplocation' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Start/Stop Controls Location</span><br/>Default: After/Below', $this->id ),
-					),
-					'coolcarousel_starttext' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Start Text</span><br/>Default: "Start" (without quotes)', $this->id ),
-					),
-					'coolcarousel_stoptext' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Stop Text</span><br/>Default: "Stop" (without quotes)', $this->id ),
-					),
-					'coolcarousel_autocontrolscombine' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Combine Start/Stop Controls YES', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Combine Start/Stop Controls</span><br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id ),
-					),
-//coolcarousel_autocontrolsselector
-					'coolcarousel_pause' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time between each auto transition (milliseconds)</span><br/>Default: 4000 (4.0 seconds)', $this->id ),
-					),
-					'coolcarousel_autohover' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'Auto Hover ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Hover</span><br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id ),
-					),
-					'coolcarousel_autodelay' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time auto show should wait before starting (milliseconds)</span><br/>Default: 0', $this->id ),
-					),
+				array(
+					'key'		=> 'coolcarousel_moveslides',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be <= maxSlides.', $this->id)
 				),
-			),
-
-			'coolcarousel_setup_f' => array(
-				'type'		=> 'multi_option',
-				'title'		=> __( '<span style="color:blue;">Cool Carousel Touch Screen Settings</span>', $this->id ),
-				'shortexp'	=> __( 'Disable Touch Swiping or Control Touch Options', $this->id ),
-				'selectvalues'	=> array(
-					'coolcarousel_touchenabled' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'Touch Swipe OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Touch Swipe Transitions</span><br/>Default: ON', $this->id ),
-					),
-					'coolcarousel_swipethreshold' => array(
-						'type' 			=> 'text_small',
-						'size'			=> 'small',
-						'inputlabel' 	=> __( '<span style="color:#800000;"><i class="icon-angle-down"></i> Swipe Threshold (pixels).</span> # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id ),
-					),
-					'coolcarousel_onetoonetouch' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'One-to-One Touch OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> One-to-One Touch</span><br/>Non-fade Slides follow the finger as it swipes.<br/>Default: ON.', $this->id ),
-					),
-					'coolcarousel_preventdefaultswipex' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'ccfalse'		=> array('name' => __( 'x-axis Swipe OFF', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> x-axis Swipe</span><br/>Default: ON', $this->id ),
-					),
-					'coolcarousel_preventdefaultswipey' => array(
-						'type' 		=> 'select',
-						'selectvalues'	=> array(
-							'cctrue'		=> array('name' => __( 'y-axis Swipe ON', $this->id ) )
-						),
-						'inputlabel' => __( '<span style="color:#800000;"><i class="icon-angle-down"></i> y-axis Swipe</span><br/>Default: OFF', $this->id ),
-					),
+				array(
+					'key'		=> 'coolcarousel_slidewidth',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Width of each slide</span><br/>Default: 2000 (pixels, responsive)', $this->id)
 				),
-
-			),
-
-// Options for Callbacks and Public Methods not added
-
-
+				array(
+					'key'		=> 'coolcarousel_speed',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Slide transition speed/duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_slidemargin',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Margin between each slide (pixels)</span><br/>Default: 0', $this->id)
+				),
+			)
 		);
 
-		$themeversionnumber = get_theme_mod( 'pagelines_version' ); // Works in both DMS and Framework
-		$dmsnoregistermetatabversion = '1.2'; //DMS 2 (v1.2) -- Notice: register_metatab is deprecated since version 1.2 of PageLines DMS! Use section_opts() instead.
-		if( function_exists('pl_has_editor')
-			&& pl_has_editor()
-			&& $themeversionnumber >= $dmsnoregistermetatabversion) {
-				//nothing
-		} else {
-			$tab_settings = array(
-					'id' 		=> 'coolcarousel_meta',
-					'name' 		=> 'Cool Carousel',
-					'icon' 		=> $this->base_url.'/icon.png',
-					'clone_id'	=> $settings['clone_id'],
-					'active'	=> $settings['active']
-				);
+		$options[] = array(
+			'key'	=> 'coolcarousel_setup_b',
+			'type'	=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;">Cool Carousel Basic Play Options</span><br/>Frequently used options', $this->id),
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_infiniteloop',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Infinite Loop</span><br/>Default: ON', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_hidecontrolonend',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Hide Control On End</span><br/>Default: NO', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_easing',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Easing (N/A for Fade mode)</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id),
+					'opts'	=> array(
+						'swing'	=> array('name' => __( 'Swing', $this->id ) ),
+						'easeInQuad'		=> array('name' => __( 'easeInQuad', $this->id ) ),
+						'easeOutQuad'	=> array('name' => __( 'easeOutQuad', $this->id ) ),
+						'easeInOutQuad'	=> array('name' => __( 'easeInOutQuad', $this->id ) ),
+						'easeInCubic' => array('name' => __( 'easeInCubic', $this->id ) ),
+						'easeOutCubic' => array('name' => __( 'easeOutCubic', $this->id ) ),
+						'easeInOutCubic' => array('name' => __( 'easeInOutCubic', $this->id ) ),
+						'easeInQuart' => array('name' => __( 'easeInQuart', $this->id ) ),
+						'easeOutQuart' => array('name' => __( 'easeOutQuart', $this->id ) ),
+						'easeInOutQuart' => array('name' => __( 'easeInOutQuart', $this->id ) ),
+						'easeInQuint' => array('name' => __( 'easeInQuint', $this->id ) ),
+						'easeOutQuint' => array('name' => __( 'easeOutQuint', $this->id ) ),
+						'easeInOutQuint' => array('name' => __( 'easeInOutQuint', $this->id ) ),
+						'easeInSine' => array('name' => __( 'easeInSine', $this->id ) ),
+						'easeOutSine' => array('name' => __( 'easeOutSine', $this->id ) ),
+						'easeInOutSine' => array('name' => __( 'easeInOutSine', $this->id ) ),
+						'easeInExpo' => array('name' => __( 'easeInExpo', $this->id ) ),
+						'easeOutExpo' => array('name' => __( 'easeOutExpo', $this->id ) ),
+						'easeInOutExpo' => array('name' => __( 'easeInOutExpo', $this->id ) ),
+						'easeInCirc' => array('name' => __( 'easeInCirc', $this->id ) ),
+						'easeOutCirc' => array('name' => __( 'easeOutCirc', $this->id ) ),
+						'easeInOutCirc' => array('name' => __( 'easeInOutCirc', $this->id ) ),
+						'easeInElastic' => array('name' => __( 'easeInElastic', $this->id ) ),
+						'easeOutElastic' => array('name' => __( 'easeOutElastic', $this->id ) ),
+						'easeInOutElastic' => array('name' => __( 'easeInOutElastic', $this->id ) ),
+						'easeInBack' => array('name' => __( 'easeInBack', $this->id ) ),
+						'easeOutBack' => array('name' => __( 'easeOutBack', $this->id ) ),
+						'easeInOutBack' => array('name' => __( 'easeInOutBack', $this->id ) ),
+						'easeInBounce' => array('name' => __( 'easeInBounce', $this->id ) ),
+						'easeOutBounce' => array('name' => __( 'easeOutBounce', $this->id ) ),
+						'easeInOutBounce' => array('name' => __( 'easeInOutBounce', $this->id ) ),
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_ticker',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker / Scrolling News Mode (N/A Fade mode)</span><br/>Default: OFF<br/>If Ticker is ON, Pager and Controls are OFF.<br/>Note: Ticker Speed = <em>Slide Transition Speed</em> divided by <em>calculated width</em> of all included items (e.g. 600w x 10 images = 6000) --> 500ms / 6000w = .08s (i.e. too fast). FYI: Calculated width is NOT controllable. It\'s dependent upon the actual image dimensions.', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Ticker Mode ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_tickerhover',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker Hover</span><br/>Default: OFF', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Ticker Pause on Hover ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_adaptiveheight',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive / Dynamic Slider Height</span><br/>Default: OFF<br/>Always ON for sliders in Vertical mode.', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Adaptive Height ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_adaptiveheightspeed',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive Height Transition Speed/Duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_preloadimages',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Preload Images Before Starting Slider</span><br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all Slides are identical dimensions.', $this->id),
+					'opts'	=> array(
+						'all'		=> array('name' => __( 'Preload ALL', $this->id ) )
+					),
+				),
+			)
+		);
 
-			register_metatab($tab_settings, $tab);
-    	}
+		$options[] = array(
+			'key'	=> 'coolcarousel_setup_c',
+			'type'	=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;">Cool Carousel Images-Only Options</span><br/>Disable Touch Swiping or Control Touch Options', $this->id),
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_ssl',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Image Source SSL/HTTPS</span><br/>Default: change image source to work with both HTTP and HTTPS URLs<br/>If one or more of your images CANNOT be served via both HTTP and HTTPS, change this option so you do not get "not found" errors.', $this->id),
+					'opts'	=> array(
+						'nochange'		=> array('name' => __( 'DO NOT Change Image Source', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_captions',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF<br/>FYI: Captions span entire slide width, not just width of image if image is narrower than the slide.', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Captions ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_grayscale',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>FYI: IE10 will display 70% opacity but not grayscale.', $this->id),
+					'opts'	=> array(
+						'gray'		=> array('name' => __( 'Grayscale ON', $this->id ) ),
+						'graynonhover' => array('name' => __( 'Grayscale ON, Color on Hover', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_boxstyling',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF<br/>Only use when there are multiple slides displayed at a time (Min # of slides to be shown > 1).', $this->id),
+					'opts'	=> array(
+						'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
+						'plimageframehover'		=> array('name' => __( 'PageLines Image Frame on Hover', $this->id ) ),
+						'plimageframe'		=> array('name' => __( 'PageLines Image Frame ON', $this->id ) ),
+					),
+				),
+			)
+		);
+
+		$options[] = array(
+			'key'	=> 'coolcarousel_setup_d',
+			'type'	=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;">Cool Carousel Navigation</span><br/>Next, Previous, Start, Stop, etc.', $this->id),
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_pager',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager</span><br/>Default: ON', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'Pager OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_pagertype',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Type</span><br/>Example of "short" -> x of y &rarr; 1 / 5<br/>Example of "full" -> circle links below slider<br/>Default: FULL', $this->id),
+					'opts'	=> array(
+						'short'		=> array('name' => __( 'Pager Type SHORT', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_pagershortseparator',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Separator (only when Pager Type is "short")</span><br/>Default: "/" (without quotes)<br/>One space on each side of separator will be added.', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_controls',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Next/Prev Controls</span><br/>Default: ON', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'Next/Prev Controls OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_nextprevlocation',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Location of Custom Next/Prev Text</span><br/>Default: After/Below<br/>Only applies if Custom Next Text and/or Custom Prev Text is added.<br/>If Custom Text is used, navigation arrows are NOT displayed over the slides.', $this->id),
+					'opts'	=> array(
+						'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_nexttext',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next Text</span><br/>Default: "Next" (without quotes)<br/>Try the "icon-chevron-sign-right" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Right".', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_prevtext',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Prev Text</span><br/>Default: "Prev" (without quotes)<br/>Try the "icon-chevron-sign-left" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Left".', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_nextprevdivider',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next/Prev Divider</span><br/>Default: N/A<br/>Try an <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "---".', $this->id)
+				),
+			)
+		);
+
+		$options[] = array(
+			'key'	=> 'coolcarousel_setup_e',
+			'type'	=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;">Cool Carousel Slideshow / Auto Play Mode</span><br/>Auto Transition, Auto Start, etc.', $this->id),
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_auto',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Play / Continual Transition</span><br/>Default: OFF', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'YES Auto Play/Transition', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_autostart',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Start the Auto Play</span><br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'OFF Must first click Play/Start', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_autodirection',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Direction</span><br/>Default: Next<br/>The direction of auto show slide transitions', $this->id),
+					'opts'	=> array(
+						'prev'		=> array('name' => __( 'Prev', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_autocontrols',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Start/Stop Controls</span><br/>Default: OFF', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Auto Controls ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_startstoplocation',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Start/Stop Controls Location</span><br/>Default: After/Below', $this->id),
+					'opts'	=> array(
+						'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_starttext',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Start Text</span><br/>Default: "Start" (without quotes)', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_stoptext',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Stop Text</span><br/>Default: "Stop" (without quotes)', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_autocontrolscombine',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Combine Start/Stop Controls</span><br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Combine Start/Stop Controls YES', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_pause',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time between each auto transition (milliseconds)</span><br/>Default: 4000 (4.0 seconds)', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_autohover',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Hover</span><br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'Auto Hover ON', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_autodelay',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time auto show should wait before starting (milliseconds)</span><br/>Default: 0', $this->id)
+				),
+			)
+		);
+
+		$options[] = array(
+			'key'	=> 'coolcarousel_setup_f',
+			'type'	=> 'multi',
+			//'col'		=> 1, //left side
+			'title'		=> __('<span style="color:blue;">Cool Carousel Touch Screen Settings</span><br/>Disable Touch Swiping or Control Touch Options', $this->id),
+			'opts'	=> array(
+				array(
+					'key'		=> 'coolcarousel_touchenabled',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Touch Swipe Transitions</span><br/>Default: ON', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'Touch Swipe OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_swipethreshold',
+					'type'		=> 'text_small',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Swipe Threshold (pixels).</span> # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id)
+				),
+				array(
+					'key'		=> 'coolcarousel_onetoonetouch',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> One-to-One Touch</span><br/>Non-fade Slides follow the finger as it swipes.<br/>Default: ON.', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'One-to-One Touch OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_preventdefaultswipex',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> x-axis Swipe</span><br/>Default: ON', $this->id),
+					'opts'	=> array(
+						'ccfalse'		=> array('name' => __( 'x-axis Swipe OFF', $this->id ) )
+					),
+				),
+				array(
+					'key'		=> 'coolcarousel_preventdefaultswipey',
+					'type'		=> 'select',
+					'default'	=> '',
+					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> y-axis Swipe</span><br/>Default: OFF', $this->id),
+					'opts'	=> array(
+						'cctrue'		=> array('name' => __( 'y-axis Swipe ON', $this->id ) )
+					),
+				),
+			)
+		);
+
+
+		return $options;
+
 	}
+
 
 
 
