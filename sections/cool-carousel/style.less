@@ -1,12 +1,12 @@
 //@coolcarouselpath is set via section.php
-@ccCaptionTextAlign: center; //only set here globally, not also set in Full-Width style.less
+@ccCaptionTextAlign: center; //only set here globally
 @ccCaptionBg: rgba(80, 80, 80, 0.75);
 @plImageFrameShadow: rgba(0, 0, 0, 0.3);
 
 .section-cool-carousel {
-	// BxSlider v4.0 - Fully loaded, responsive content slider
+	// BxSlider v4.1.2 - Fully loaded, responsive content slider
 	// http://bxslider.com
-	// Written by: Steven Wanderski, 2012
+	// Written by: Steven Wanderski, 2014
 	// http://stevenwanderski.com
 	// (while drinking Belgian ales and listening to jazz)
 	// CEO and founder of bxCreative, LTD
@@ -31,9 +31,16 @@
 		// THEME
 		.cc-viewport {
 			.box-shadow(0 0 5px @inputBorder);
-			border: solid @pl-base 5px;
+			border: 5px solid @pl-base;
 			left: -5px;
 			background: @pl-base;
+
+			// fix other elements on the page moving (on Chrome)
+			-webkit-transform: translatez(0);
+			   -moz-transform: translatez(0);
+				-ms-transform: translatez(0);
+				 -o-transform: translatez(0);
+				    transform: translatez(0);
 		}
 		.cc-pager,
 		.cc-controls-auto {
@@ -52,7 +59,7 @@
 			position: absolute;
 			top: 0;
 			left: 0;
-			z-index: 990;
+			z-index: 990; //not 2000
 		}
 
 		// PAGER
@@ -117,7 +124,7 @@
 			width: 32px;
 			height: 32px;
 			text-indent: -9999px;
-			z-index: 990;
+			z-index: 990; //not 9999
 
 			//override DMS 2's typography.less because of http://forum.pagelines.com/topic/33906-problems-with-carousel-navigational-arrows/?p=201459
 			transition: color .2s linear;

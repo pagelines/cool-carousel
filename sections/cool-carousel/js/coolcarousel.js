@@ -1,11 +1,11 @@
 /**
- * BxSlider v4.1.1 - Fully loaded, responsive content slider
+ * BxSlider v4.1.2 - Fully loaded, responsive content slider
  * http://bxslider.com
  *
- * Copyright 2012, Steven Wanderski - http://stevenwanderski.com - http://bxcreative.com
+ * Copyright 2014, Steven Wanderski - http://stevenwanderski.com - http://bxcreative.com
  * Written while drinking Belgian ales and listening to jazz
  *
- * Released under the WTFPL license - http://sam.zoy.org/wtfpl/
+ * Released under the MIT license - http://opensource.org/licenses/MIT
  */
 
 ;(function($){
@@ -32,6 +32,9 @@
 		video: false,
 		useCSS: true,
 		preloadImages: 'visible',
+		responsive: true,
+		slideZIndex: 50,
+		wrapperClass: 'cc-wrapper',
 
 		// TOUCH
 		touchEnabled: true,
@@ -67,6 +70,7 @@
 		autoDirection: 'next',
 		autoHover: false,
 		autoDelay: 0,
+		autoSlideForOnePage: false,
 
 		// CAROUSEL
 		minSlides: 1,
@@ -79,7 +83,8 @@
 		onSlideBefore: function() {},
 		onSlideAfter: function() {},
 		onSlideNext: function() {},
-		onSlidePrev: function() {}
+		onSlidePrev: function() {},
+		onSliderResize: function() {}
 	}
 
 	$.fn.ccSlider = function(options){
@@ -164,6 +169,11 @@
 			}());
 			// if vertical mode always make maxSlides and minSlides equal
 			if(slider.settings.mode == 'vertical') slider.settings.maxSlides = slider.settings.minSlides;
+			// save original style data
+			el.data("origStyle", el.attr("style"));
+			el.children(slider.settings.slideSelector).each(function() {
+			  $(this).data("origStyle", $(this).attr("style"));
+			});
 			// perform all DOM / CSS modifications
 			setup();
 		}
@@ -173,7 +183,7 @@
 		 */
 		var setup = function(){
 			// wrap el in a wrapper
-			el.wrap('<div class="cc-wrapper"><div class="cc-viewport"></div></div>');
+			el.wrap('<div class="' + slider.settings.wrapperClass + '"><div class="cc-viewport"></div></div>');
 			// store a namspace reference to .cc-viewport
 			slider.viewport = el.parent();
 			// add a loading div to display while images are loading
@@ -182,7 +192,7 @@
 			// set el to a massive width, to hold any needed slides
 			// also strip any margin and padding from el
 			el.css({
-				width: slider.settings.mode == 'horizontal' ? slider.children.length * 215 + '%' : 'auto',
+				width: slider.settings.mode == 'horizontal' ? (slider.children.length * 100 + 215) + '%' : 'auto',
 				position: 'relative'
 			});
 			// if using CSS, add the easing property
@@ -202,6 +212,12 @@
 			slider.viewport.parent().css({
 				maxWidth: getViewportMaxWidth()
 			});
+			// make modification to the wrapper (.cc-wrapper)
+			if(!slider.settings.pager) {
+				slider.viewport.parent().css({
+				margin: '0 auto 0px'
+				});
+			}
 			// apply css to all slider children
 			slider.children.css({
 				'float': slider.settings.mode == 'horizontal' ? 'left' : 'none',
@@ -209,7 +225,7 @@
 				position: 'relative'
 			});
 			// apply the calculated width after the float is applied to prevent scrollbar interference
-			slider.children.width(getSlideWidth());
+			slider.children.css('width', getSlideWidth());
 			// if slideMargin is supplied, add the css
 			if(slider.settings.mode == 'horizontal' && slider.settings.slideMargin > 0) slider.children.css('marginRight', slider.settings.slideMargin);
 			if(slider.settings.mode == 'vertical' && slider.settings.slideMargin > 0) slider.children.css('marginBottom', slider.settings.slideMargin);
@@ -221,7 +237,7 @@
 					display: 'none'
 				});
 				// prepare the z-index on the showing element
-				slider.children.eq(slider.settings.startSlide).css({zIndex: 50, display: 'block'});
+				slider.children.eq(slider.settings.startSlide).css({zIndex: slider.settings.slideZIndex, display: 'block'});
 			}
 			// create an element to contain all slider controls (pager, start / stop, etc)
 			slider.controls.el = $('<div class="cc-controls" />');
@@ -254,11 +270,16 @@
 
 		var loadElements = function(selector, callback){
 			var total = selector.find('img, iframe').length;
+			if (total == 0){
+				callback();
+				return;
+			}
 			var count = 0;
 			selector.find('img, iframe').each(function(){
-				if($(this).is('img')) $(this).attr('src', $(this).attr('src') + '?timestamp=' + new Date().getTime());
-				$(this).load(function(){
-					if(++count == total) callback();
+				$(this).one('load', function() {
+				  if(++count == total) callback();
+				}).each(function() {
+				  if(this.complete) $(this).load();
 				});
 			});
 		}
@@ -289,9 +310,9 @@
 			// slider has been fully initialized
 			slider.initialized = true;
 			// bind the resize call to the window
-			$(window).bind('resize', resizeWindow);
-			// if auto is true, start the show
-			if (slider.settings.auto && slider.settings.autoStart) initAuto();
+			if (slider.settings.responsive) $(window).bind('resize', resizeWindow);
+			// if auto is true and has more than 1 page, start the show
+			if (slider.settings.auto && slider.settings.autoStart && (getPagerQty() > 1 || slider.settings.autoSlideForOnePage)) initAuto();
 			// if ticker is true, start the ticker
 			if (slider.settings.ticker) initTicker();
 			// if pager is requested, make the appropriate pager link active
@@ -348,6 +369,14 @@
 					return $(this).outerHeight(false);
 				}).get());
 			}
+
+			if(slider.viewport.css('box-sizing') == 'border-box'){
+				height +=	parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom')) +
+							parseFloat(slider.viewport.css('border-top-width')) + parseFloat(slider.viewport.css('border-bottom-width'));
+			}else if(slider.viewport.css('box-sizing') == 'padding-box'){
+				height +=	parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom'));
+			}
+
 			return height;
 		}
 
@@ -404,8 +433,9 @@
 					slidesShowing = slider.settings.maxSlides;
 				// if viewport is between min / max thresholds, divide viewport width by first child width
 				}else{
-					var childWidth = slider.children.first().width();
-					slidesShowing = Math.floor(slider.viewport.width() / childWidth);
+					var childWidth = slider.children.first().width() + slider.settings.slideMargin;
+					slidesShowing = Math.floor((slider.viewport.width() +
+						slider.settings.slideMargin) / childWidth);
 				}
 			// if "vertical" mode, slides showing will always be minSlides
 			}else if(slider.settings.mode == 'vertical'){
@@ -422,7 +452,7 @@
 			// if moveSlides is specified by the user
 			if(slider.settings.moveSlides > 0){
 				if(slider.settings.infiniteLoop){
-					pagerQty = slider.children.length / getMoveBy();
+					pagerQty = Math.ceil(slider.children.length / getMoveBy());
 				}else{
 					// use a while loop to determine pages
 					var breakPoint = 0;
@@ -464,7 +494,7 @@
 					var lastChild = slider.children.last();
 					var position = lastChild.position();
 					// set the left position
-					setPositionProperty(-(position.left - (slider.viewport.width() - lastChild.width())), 'reset', 0);
+					setPositionProperty(-(position.left - (slider.viewport.width() - lastChild.outerWidth())), 'reset', 0);
 				}else if(slider.settings.mode == 'vertical'){
 					// get the last showing index's position
 					var lastShowingIndex = slider.children.length - slider.settings.minSlides;
@@ -599,7 +629,7 @@
 				slider.pagerEl = $(slider.settings.pagerCustom);
 			}
 			// assign the pager click binding
-			slider.pagerEl.delegate('a', 'click', clickPagerBind);
+			slider.pagerEl.on('click', 'a', clickPagerBind);
 		}
 
 		/**
@@ -639,8 +669,8 @@
 			// add the controls to the DOM
 			slider.controls.autoEl = $('<div class="cc-controls-auto" />');
 			// bind click actions to the controls
-			slider.controls.autoEl.delegate('.cc-start', 'click', clickStartBind);
-			slider.controls.autoEl.delegate('.cc-stop', 'click', clickStopBind);
+			slider.controls.autoEl.on('click', '.cc-start', clickStartBind);
+			slider.controls.autoEl.on('click', '.cc-stop', clickStopBind);
 			// if autoControlsCombine, insert only the "start" control
 			if(slider.settings.autoControlsCombine){
 				slider.controls.autoEl.append(slider.controls.start);
@@ -668,7 +698,9 @@
 				// get the image title attribute
 				var title = $(this).find('img:first').attr('title');
 				// append the caption
-				if (title != undefined) $(this).append('<div class="cc-caption"><span>' + title + '</span></div>');
+				if (title != undefined && ('' + title).length) {
+                    $(this).append('<div class="cc-caption"><span>' + title + '</span></div>');
+                }
 			});
 		}
 
@@ -730,10 +762,12 @@
 			// if auto show is running, stop it
 			if (slider.settings.auto) el.stopAuto();
 			var pagerLink = $(e.currentTarget);
-			var pagerIndex = parseInt(pagerLink.attr('data-slide-index'));
-			// if clicked pager link is not active, continue with the goToSlide call
-			if(pagerIndex != slider.active.index) el.goToSlide(pagerIndex);
-			e.preventDefault();
+			if(pagerLink.attr('data-slide-index') !== undefined){
+				var pagerIndex = parseInt(pagerLink.attr('data-slide-index'));
+				// if clicked pager link is not active, continue with the goToSlide call
+				if(pagerIndex != slider.active.index) el.goToSlide(pagerIndex);
+				e.preventDefault();
+			}
 		}
 
 		/**
@@ -744,8 +778,12 @@
 		 */
 		var updatePagerActive = function(slideIndex){
 			// if "short" pager type
+			var len = slider.children.length; // nb of children
 			if(slider.settings.pagerType == 'short'){
-				slider.pagerEl.html((slideIndex + 1) + slider.settings.pagerShortSeparator + slider.children.length);
+				if(slider.settings.maxSlides > 1) {
+					len = Math.ceil(slider.children.length/slider.settings.maxSlides);
+				}
+				slider.pagerEl.html( (slideIndex + 1) + slider.settings.pagerShortSeparator + len);
 				return;
 			}
 			// remove all pager active classes
@@ -772,8 +810,10 @@
 				}else if(slider.active.index == slider.children.length - 1){
 					position = slider.children.eq(slider.children.length - 1).position();
 				}
-				if (slider.settings.mode == 'horizontal') { setPositionProperty(-position.left, 'reset', 0);; }
-				else if (slider.settings.mode == 'vertical') { setPositionProperty(-position.top, 'reset', 0);; }
+				if(position){
+					if (slider.settings.mode == 'horizontal') { setPositionProperty(-position.left, 'reset', 0); }
+					else if (slider.settings.mode == 'vertical') { setPositionProperty(-position.top, 'reset', 0); }
+				}
 			}
 			// declare that the transition is complete
 			slider.working = false;
@@ -1039,6 +1079,8 @@
 		 * Window resize event callback
 		 */
 		var resizeWindow = function(e){
+			// don't do anything if slider isn't initialized.
+			if(!slider.initialized) return;
 			// get the new window dimens (again, thank you IE)
 			var windowWidthNew = $(window).width();
 			var windowHeightNew = $(window).height();
@@ -1051,6 +1093,8 @@
 				windowHeight = windowHeightNew;
 				// update all dynamic elements
 				el.redrawSlider();
+				// Call user resize handler
+				slider.settings.onSliderResize.call(el, slider.active.index);
 			}
 		}
 
@@ -1108,8 +1152,8 @@
 				// fade out the visible child and reset its z-index value
 				slider.children.filter(':visible').fadeOut(slider.settings.speed).css({zIndex: 0});
 				// fade in the newly requested slide
-				slider.children.eq(slider.active.index).css('zIndex', 51).fadeIn(slider.settings.speed, function(){
-					$(this).css('zIndex', 50);
+				slider.children.eq(slider.active.index).css('zIndex', slider.settings.slideZIndex+1).fadeIn(slider.settings.speed, function(){
+					$(this).css('zIndex', slider.settings.slideZIndex);
 					updateAfterSlideTransition();
 				});
 			// slider mode is not "fade"
@@ -1127,7 +1171,7 @@
 						var lastChild = slider.children.eq(slider.children.length - 1);
 						position = lastChild.position();
 						// calculate the position of the last slide
-						moveBy = slider.viewport.width() - lastChild.width();
+						moveBy = slider.viewport.width() - lastChild.outerWidth();
 					}else{
 						// get last showing index position
 						var lastShowingIndex = slider.children.length - slider.settings.minSlides;
@@ -1223,6 +1267,13 @@
 		}
 
 		/**
+		 * Returns current slide element
+		 */
+		el.getCurrentSlideElement = function(){
+			return slider.children.eq(slider.active.index);
+		}
+
+		/**
 		 * Returns number of slides in show
 		 */
 		el.getSlideCount = function(){
@@ -1259,16 +1310,19 @@
 			if(!slider.initialized) return;
 			slider.initialized = false;
 			$('.cc-clone', this).remove();
-			slider.children.removeAttr('style');
-			this.removeAttr('style').unwrap().unwrap();
+			slider.children.each(function() {
+				$(this).data("origStyle") != undefined ? $(this).attr("style", $(this).data("origStyle")) : $(this).removeAttr('style');
+			});
+			$(this).data("origStyle") != undefined ? this.attr("style", $(this).data("origStyle")) : $(this).removeAttr('style');
+			$(this).unwrap().unwrap();
 			if(slider.controls.el) slider.controls.el.remove();
 			if(slider.controls.next) slider.controls.next.remove();
 			if(slider.controls.prev) slider.controls.prev.remove();
-			if(slider.pagerEl) slider.pagerEl.remove();
+			if(slider.pagerEl && slider.settings.controls) slider.pagerEl.remove();
 			$('.cc-caption', this).remove();
 			if(slider.controls.autoEl) slider.controls.autoEl.remove();
 			clearInterval(slider.interval);
-			$(window).unbind('resize', resizeWindow);
+			if(slider.settings.responsive) $(window).unbind('resize', resizeWindow);
 		}
 
 		/**

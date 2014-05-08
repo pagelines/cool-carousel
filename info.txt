@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8.5 =
+* Maintenance updates to .js, .less, and the product images
+
 = 1.8.4 =
 * DO NOT update unless running DMS 2.
 * Fix for options not appearing in DMS 2.
