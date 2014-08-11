@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8.6 =
+* Updated art and fixed icons in options panel
+
 = 1.8.5 =
 * Maintenance updates to .js, .less, and the product images
 

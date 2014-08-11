@@ -4,7 +4,6 @@ Section: Cool Carousel
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=coolcarousel_section
 Plugin URI: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=coolcarousel_section
-Version: 1.8.5
 Description: A responsive carousel/slider with left, right, up, down, or fade transition, customizable number of slides displayed at once, customizable number of slides to advance, auto play option, timing intervals, and many more carousel-by-carousel options. Utilizes custom post types so you can easily modify the order, add a single slide to multiple carousels, store drafts, and more.
 Demo: http://www.pagelinestheme.com/coolcarousel-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=coolcarousel_section
 Class Name: CoolCarousel
@@ -476,7 +475,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 			'key'		=> 'coolcarousel_setup_a',
 			'type'		=> 'multi',
 			//'col'		=> 1, //left side
-			'title'		=> __('<span style="color:blue;"><i class="icon-power-off"></i> Cool Carousel Setup</span><br/>Pick your Cool Carousel Set and # of Slides', $this->id),
+			'title'		=> __('<span style="color:blue;"><i class="fa fa-power-off"></i> Cool Carousel Setup</span><br/>Pick your Cool Carousel Set and # of Slides', $this->id),
 			'help'		=> 'You may want to order Cool Carousel Slides using a post type order plugin for WordPress. However, if you would like to do it algorithmically, we have provided these options for you.',
 			'opts'	=> array(
 				array(
@@ -484,19 +483,19 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'type'		=> 'select_taxonomy',
 					//'default'	=> '',
 					'taxonomy_id'	=> $this->taxID,
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Cool Carousel Set To Show</span><br/>Default: All Slides from All Sets', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Cool Carousel Set To Show</span><br/>Default: All Slides from All Sets', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_totalslides',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to Query For (in chosen C.C. Set)</span><br/>Default: unlimited<br/>', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Max # of Slides to Query For (in chosen C.C. Set)</span><br/>Default: unlimited<br/>', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_orderby',
 					'type'		=> 'select',
 					//'default'	=> 'ID',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Order Cool Carousel By</span> (Leave blank if using Post Type Order Plugin)', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Order Cool Carousel By</span> (Leave blank if using Post Type Order Plugin)', $this->id),
 					'opts' => array(
 						'ID' 		=> array('name' => __( 'Post ID', $this->id ) ),
 						'title' 	=> array('name' => __( 'Title', $this->id ) ),
@@ -509,7 +508,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_order',
 					'type'		=> 'select',
 					//'default' => 'DESC',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Select sort order</span><br/>Default: Descending', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Select sort order</span><br/>Default: Descending', $this->id),
 					'opts' => array(
 						//'DESC' 		=> array('name' => __( 'Descending (Default)', $this->id ) ),
 						'ASC' 		=> array('name' => __( 'Ascending', $this->id ) ),
@@ -519,7 +518,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_mode',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Mode</span><br/>Default: Horizontal', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Mode</span><br/>Default: Horizontal', $this->id),
 					'opts' => array(
 						'fade' => array('name' => __( 'Fade', $this->id )),
 						'vertical' => array('name' => __( 'Vertical', $this->id )),
@@ -529,37 +528,37 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_minslides',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Min # of Slides to be Shown (N/A for Fade mode)</span><br/>Default: 1', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Min # of Slides to be Shown (N/A for Fade mode)</span><br/>Default: 1', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_maxslides',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.<br/>Suggestion: <a href="http://forum.pagelines.com/topic/31338-minimum-slides-maximum-slides-slides-to-move/?p=185976" target="_blank">Reduce the slideWidth option for this to take effect.</a>', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Max # of Slides to be Shown (N/A Fade mode)</span><br/>Default: 1<br/>Must be >= minSlides.<br/>Suggestion: <a href="http://forum.pagelines.com/topic/31338-minimum-slides-maximum-slides-slides-to-move/?p=185976" target="_blank">Reduce the slideWidth option for this to take effect.</a>', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_moveslides',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be <= maxSlides.', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Slides to Move each Transition (N/A Fade mode)</span><br/>Default: The # of fully-visible Slides.<br/>Must be <= maxSlides.', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_slidewidth',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Width of each slide</span><br/>Default: 2000 (pixels, responsive)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Width of each slide</span><br/>Default: 2000 (pixels, responsive)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_speed',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Slide transition speed/duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Slide transition speed/duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_slidemargin',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Margin between each slide (pixels)</span><br/>Default: 0', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Margin between each slide (pixels)</span><br/>Default: 0', $this->id)
 				),
 			)
 		);
@@ -574,7 +573,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_infiniteloop',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Infinite Loop</span><br/>Default: ON', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Infinite Loop</span><br/>Default: ON', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
 					),
@@ -583,7 +582,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_hidecontrolonend',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Hide Control On End</span><br/>Default: NO', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Hide Control On End</span><br/>Default: NO', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'Infinite Loop OFF', $this->id ) )
 					),
@@ -592,7 +591,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_easing',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Easing (N/A for Fade mode)</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Easing (N/A for Fade mode)</span><br/>Default: N/A (For a clue on which transition to pick, check out <a href="http://easings.net/" target="_blank">Easings.net</a>.)', $this->id),
 					'opts'	=> array(
 						'swing'	=> array('name' => __( 'Swing', $this->id ) ),
 						'easeInQuad'		=> array('name' => __( 'easeInQuad', $this->id ) ),
@@ -631,7 +630,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_ticker',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker / Scrolling News Mode (N/A Fade mode)</span><br/>Default: OFF<br/>If Ticker is ON, Pager and Controls are OFF.<br/>Note: Ticker Speed = <em>Slide Transition Speed</em> divided by <em>calculated width</em> of all included items (e.g. 600w x 10 images = 6000) --> 500ms / 6000w = .08s (i.e. too fast). FYI: Calculated width is NOT controllable. It\'s dependent upon the actual image dimensions.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Ticker / Scrolling News Mode (N/A Fade mode)</span><br/>Default: OFF<br/>If Ticker is ON, Pager and Controls are OFF.<br/>Note: Ticker Speed = <em>Slide Transition Speed</em> divided by <em>calculated width</em> of all included items (e.g. 600w x 10 images = 6000) --> 500ms / 6000w = .08s (i.e. too fast). FYI: Calculated width is NOT controllable. It\'s dependent upon the actual image dimensions.', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Ticker Mode ON', $this->id ) )
 					),
@@ -640,7 +639,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_tickerhover',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Ticker Hover</span><br/>Default: OFF', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Ticker Hover</span><br/>Default: OFF', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Ticker Pause on Hover ON', $this->id ) )
 					),
@@ -649,7 +648,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_adaptiveheight',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive / Dynamic Slider Height</span><br/>Default: OFF<br/>Always ON for sliders in Vertical mode.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Adaptive / Dynamic Slider Height</span><br/>Default: OFF<br/>Always ON for sliders in Vertical mode.', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Adaptive Height ON', $this->id ) )
 					),
@@ -658,13 +657,13 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_adaptiveheightspeed',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Adaptive Height Transition Speed/Duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Adaptive Height Transition Speed/Duration (milliseconds)</span><br/>Default: 500 (0.5 seconds)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_preloadimages',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Preload Images Before Starting Slider</span><br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all Slides are identical dimensions.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Preload Images Before Starting Slider</span><br/>Default: VISIBLE.<br/>Tip: use VISIBLE if all Slides are identical dimensions.', $this->id),
 					'opts'	=> array(
 						'all'		=> array('name' => __( 'Preload ALL', $this->id ) )
 					),
@@ -682,7 +681,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_ssl',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Image Source SSL/HTTPS</span><br/>Default: change image source to work with both HTTP and HTTPS URLs<br/>If one or more of your images CANNOT be served via both HTTP and HTTPS, change this option so you do not get "not found" errors.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Image Source SSL/HTTPS</span><br/>Default: change image source to work with both HTTP and HTTPS URLs<br/>If one or more of your images CANNOT be served via both HTTP and HTTPS, change this option so you do not get "not found" errors.', $this->id),
 					'opts'	=> array(
 						'nochange'		=> array('name' => __( 'DO NOT Change Image Source', $this->id ) )
 					),
@@ -691,7 +690,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_captions',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Captions</span><br/>Default: OFF<br/>FYI: Captions span entire slide width, not just width of image if image is narrower than the slide.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Captions</span><br/>Default: OFF<br/>FYI: Captions span entire slide width, not just width of image if image is narrower than the slide.', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Captions ON', $this->id ) )
 					),
@@ -700,7 +699,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_grayscale',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>FYI: IE10 will display 70% opacity but not grayscale.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Grayscale Mode</span><br/>Default: OFF<br/>FYI: IE10 will display 70% opacity but not grayscale.', $this->id),
 					'opts'	=> array(
 						'gray'		=> array('name' => __( 'Grayscale ON', $this->id ) ),
 						'graynonhover' => array('name' => __( 'Grayscale ON, Color on Hover', $this->id ) )
@@ -710,7 +709,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_boxstyling',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF<br/>Only use when there are multiple slides displayed at a time (Min # of slides to be shown > 1).', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Box Highlight on Hover</span><br/>Default: OFF<br/>Only use when there are multiple slides displayed at a time (Min # of slides to be shown > 1).', $this->id),
 					'opts'	=> array(
 						'boxhighlighthover'		=> array('name' => __( 'Box Highlight on Hover', $this->id ) ),
 						'plimageframehover'		=> array('name' => __( 'PageLines Image Frame on Hover', $this->id ) ),
@@ -730,7 +729,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_pager',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager</span><br/>Default: ON', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Pager</span><br/>Default: ON', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'Pager OFF', $this->id ) )
 					),
@@ -739,7 +738,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_pagertype',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Type</span><br/>Example of "short" -> x of y &rarr; 1 / 5<br/>Example of "full" -> circle links below slider<br/>Default: FULL', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Pager Type</span><br/>Example of "short" -> x of y &rarr; 1 / 5<br/>Example of "full" -> circle links below slider<br/>Default: FULL', $this->id),
 					'opts'	=> array(
 						'short'		=> array('name' => __( 'Pager Type SHORT', $this->id ) )
 					),
@@ -748,13 +747,13 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_pagershortseparator',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Pager Separator (only when Pager Type is "short")</span><br/>Default: "/" (without quotes)<br/>One space on each side of separator will be added.', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Pager Separator (only when Pager Type is "short")</span><br/>Default: "/" (without quotes)<br/>One space on each side of separator will be added.', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_controls',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Next/Prev Controls</span><br/>Default: ON', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Next/Prev Controls</span><br/>Default: ON', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'Next/Prev Controls OFF', $this->id ) )
 					),
@@ -763,7 +762,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_nextprevlocation',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Location of Custom Next/Prev Text</span><br/>Default: After/Below<br/>Only applies if Custom Next Text and/or Custom Prev Text is added.<br/>If Custom Text is used, navigation arrows are NOT displayed over the slides.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Location of Custom Next/Prev Text</span><br/>Default: After/Below<br/>Only applies if Custom Next Text and/or Custom Prev Text is added.<br/>If Custom Text is used, navigation arrows are NOT displayed over the slides.', $this->id),
 					'opts'	=> array(
 						'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
 					),
@@ -772,19 +771,19 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_nexttext',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next Text</span><br/>Default: "Next" (without quotes)<br/>Try the "icon-chevron-sign-right" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Right".', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Custom Next Text</span><br/>Default: "Next" (without quotes)<br/>Try the "fa fa-chevron-sign-right" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Right".', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_prevtext',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Prev Text</span><br/>Default: "Prev" (without quotes)<br/>Try the "icon-chevron-sign-left" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Left".', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Custom Prev Text</span><br/>Default: "Prev" (without quotes)<br/>Try the "fa fa-chevron-sign-left" <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "Left".', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_nextprevdivider',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Next/Prev Divider</span><br/>Default: N/A<br/>Try an <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "---".', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Custom Next/Prev Divider</span><br/>Default: N/A<br/>Try an <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">icon</a> or "---".', $this->id)
 				),
 			)
 		);
@@ -799,7 +798,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_auto',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Play / Continual Transition</span><br/>Default: OFF', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Auto Play / Continual Transition</span><br/>Default: OFF', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'YES Auto Play/Transition', $this->id ) )
 					),
@@ -808,7 +807,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_autostart',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Start the Auto Play</span><br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Auto Start the Auto Play</span><br/>Default: ON<br/>ON = Starts playing on load.<br/>OFF = starts when the "Start" control is clicked.', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'OFF Must first click Play/Start', $this->id ) )
 					),
@@ -817,7 +816,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_autodirection',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Direction</span><br/>Default: Next<br/>The direction of auto show slide transitions', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Auto Direction</span><br/>Default: Next<br/>The direction of auto show slide transitions', $this->id),
 					'opts'	=> array(
 						'prev'		=> array('name' => __( 'Prev', $this->id ) )
 					),
@@ -826,7 +825,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_autocontrols',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Start/Stop Controls</span><br/>Default: OFF', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Start/Stop Controls</span><br/>Default: OFF', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Auto Controls ON', $this->id ) )
 					),
@@ -835,7 +834,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_startstoplocation',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Custom Start/Stop Controls Location</span><br/>Default: After/Below', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Custom Start/Stop Controls Location</span><br/>Default: After/Below', $this->id),
 					'opts'	=> array(
 						'before'		=> array('name' => __( 'Show Above/Before Slides', $this->id ) )
 					),
@@ -844,19 +843,19 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_starttext',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Start Text</span><br/>Default: "Start" (without quotes)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Start Text</span><br/>Default: "Start" (without quotes)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_stoptext',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Stop Text</span><br/>Default: "Stop" (without quotes)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Stop Text</span><br/>Default: "Stop" (without quotes)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_autocontrolscombine',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Combine Start/Stop Controls</span><br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Combine Start/Stop Controls</span><br/>Default: NO<br/>When slideshow is playing, only "Stop" control is displayed and vice-versa.', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Combine Start/Stop Controls YES', $this->id ) )
 					),
@@ -865,13 +864,13 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_pause',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time between each auto transition (milliseconds)</span><br/>Default: 4000 (4.0 seconds)', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Amount of time between each auto transition (milliseconds)</span><br/>Default: 4000 (4.0 seconds)', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_autohover',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Auto Hover</span><br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Auto Hover</span><br/>Default: OFF<br/>ON = Transitions will pause when mouse hovers over slider.', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'Auto Hover ON', $this->id ) )
 					),
@@ -880,7 +879,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_autodelay',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Amount of time auto show should wait before starting (milliseconds)</span><br/>Default: 0', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Amount of time auto show should wait before starting (milliseconds)</span><br/>Default: 0', $this->id)
 				),
 			)
 		);
@@ -895,7 +894,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_touchenabled',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Touch Swipe Transitions</span><br/>Default: ON', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Touch Swipe Transitions</span><br/>Default: ON', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'Touch Swipe OFF', $this->id ) )
 					),
@@ -904,13 +903,13 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_swipethreshold',
 					'type'		=> 'text_small',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> Swipe Threshold (pixels).</span> # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id)
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> Swipe Threshold (pixels).</span> # of pixels a touch swipe needs to exceed to execute a slide transition. Only if Touch Enabled is on.<br/>Default: 50', $this->id)
 				),
 				array(
 					'key'		=> 'coolcarousel_onetoonetouch',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> One-to-One Touch</span><br/>Non-fade Slides follow the finger as it swipes.<br/>Default: ON.', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> One-to-One Touch</span><br/>Non-fade Slides follow the finger as it swipes.<br/>Default: ON.', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'One-to-One Touch OFF', $this->id ) )
 					),
@@ -919,7 +918,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_preventdefaultswipex',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> x-axis Swipe</span><br/>Default: ON', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> x-axis Swipe</span><br/>Default: ON', $this->id),
 					'opts'	=> array(
 						'ccfalse'		=> array('name' => __( 'x-axis Swipe OFF', $this->id ) )
 					),
@@ -928,7 +927,7 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 					'key'		=> 'coolcarousel_preventdefaultswipey',
 					'type'		=> 'select',
 					'default'	=> '',
-					'label' 	=> __('<span style="color:#800000;"><i class="icon-angle-down"></i> y-axis Swipe</span><br/>Default: OFF', $this->id),
+					'label' 	=> __('<span style="color:#800000;"><i class="fa fa-angle-down"></i> y-axis Swipe</span><br/>Default: OFF', $this->id),
 					'opts'	=> array(
 						'cctrue'		=> array('name' => __( 'y-axis Swipe ON', $this->id ) )
 					),
