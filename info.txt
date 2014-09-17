@@ -4,6 +4,9 @@ A custom post type section that allows images, videos, or custom HTML in a horiz
 
 == Changelog ==
 
+= 1.8.7 =
+* Fix to load wp-admin menu icon as protocol-relative URL to resolve issue of loading as HTTP when wp-admin is set to HTTPS.
+
 = 1.8.6 =
 * Updated art and fixed icons in options panel
 

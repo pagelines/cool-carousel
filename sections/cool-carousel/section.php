@@ -329,14 +329,16 @@ YouTube videos are not clickable to play in the carousel for Firefox if useCSS i
 		// http://codex.wordpress.org/Function_Reference/register_post_type
 		// http://www.paulund.co.uk/creating-a-custom-post-type
 		// don't need all custom stuff because PageLinesPostType sets defaults ( https://github.com/pagelines/DMS/blob/7602ed0959184fe4ab30207e2b0327e4cb5542f6/includes/class.types.php )
+		$icon = $this->base_url.'/icon.png';
+			$icon = str_ireplace('http://', '//', $icon);
 		$args = array(
 				'label' 			=> __( 'Cool Carousel', $this->id ),
 				'singular_label' 	=> __( 'Cool Carousel Slide', $this->id ), // default is 'Post' in WP Admin Bar
 				'description' 		=> __( 'Cool Carousel Slides', $this->id ),
 				'capability_type'	=> 'page',
 				'supports'			=> array( 'title' ),
-				'menu_icon'			=> $this->base_url.'/icon.png',
-			);
+				'menu_icon'			=> $icon,
+		);
 		$taxonomies = array(
 			$this->taxID => array(
 					'label' => __( 'Cool Carousel Sets', $this->id ),
